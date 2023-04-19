@@ -2,6 +2,7 @@
 #include <Model.h>
 #include <WorldTransform.h>
 #include <ViewProjection.h>
+#include <memory>
 
 class Player {
 public:
@@ -10,19 +11,19 @@ public:
 	//	デストラクタ
 	~Player();
 	//	初期化
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(std::shared_ptr<Model> model, uint32_t textureHandle);
 	
 	//	更新
 	void Update();
 
 	//	描画
-	void Draw(ViewProjection viewProjection);
+	void Draw(ViewProjection& viewProjection);
 
 private:
 	//	ワールド変換データ
 	WorldTransform worldTransform_;
 	//	モデル
-	Model* model_ = nullptr;
+	std::shared_ptr<Model> model_;
 	//	テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 

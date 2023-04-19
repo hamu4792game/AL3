@@ -9,7 +9,7 @@ Player::~Player() {
 
 }
 
-void Player::Initialize(Model* model, uint32_t textureHandle) {
+void Player::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle) {
 	//	NULLポインタチェック
 	assert(model);
 	//	受け取ったデータをメンバ変数に記録する
@@ -24,6 +24,6 @@ void Player::Update() {
 
 }
 
-void Player::Draw(ViewProjection viewProjection) {
+void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }

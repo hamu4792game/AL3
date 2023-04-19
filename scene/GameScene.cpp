@@ -5,8 +5,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
-	delete playerModel;
-	delete player;
+	
 }
 
 void GameScene::Initialize() {
@@ -16,11 +15,12 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	playerTexture = TextureManager::Load("Player/player.png");
-	playerModel = Model::Create();
+	playerModel.reset(Model::Create());
+	playerObsever = playerModel;
 	viewProjection.Initialize();
 
 	//	自キャラの生成
-	player = new Player();
+	player = std::make_unique<Player>();
 	//	自キャラの初期化
 	player->Initialize(playerModel, playerTexture);
 }
