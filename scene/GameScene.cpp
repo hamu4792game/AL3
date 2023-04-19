@@ -15,7 +15,7 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	playerTexture = TextureManager::Load("sample.png");
+	playerTexture = TextureManager::Load("Player/player.png");
 	playerModel = Model::Create();
 	viewProjection.Initialize();
 
