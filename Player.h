@@ -3,6 +3,7 @@
 #include <WorldTransform.h>
 #include <ViewProjection.h>
 #include <memory>
+#include "Input.h"
 
 class Player {
 public:
@@ -20,6 +21,10 @@ public:
 	void Draw(ViewProjection& viewProjection);
 
 private:
+	//	キーボード入力
+	Input* input_ = nullptr;
+
+
 	//	ワールド変換データ
 	WorldTransform worldTransform_;
 	//	モデル
