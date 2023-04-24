@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include <cassert>
+#include "ImGuiManager.h"
 
 Player::Player() {
 
@@ -42,7 +43,21 @@ void Player::Update() {
 	};
 
 	//	座標移動（ベクトルの加算）
-//	worldTransform_.translation_ += move;
+	worldTransform_.translation_ += move;
+
+	//	アフィン変換
+	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(
+	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	//	行列を定数バッファに転送
+	worldTransform_.TransferMatrix();
+
+	//	キャラクターの座標を画面表示する処理
+	ImGui::Begin("Player");
+	ImGui::Text(
+	    "player : %0.2f,%0.2f,%0.2f", worldTransform_.translation_.x, worldTransform_.translation_.y,
+	    worldTransform_.translation_.z);
+	ImGui::End();
+
 }
 
 void Player::Draw(ViewProjection& viewProjection) {

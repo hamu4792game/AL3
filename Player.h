@@ -4,6 +4,7 @@
 #include <ViewProjection.h>
 #include <memory>
 #include "Input.h"
+#include "MyMatrix4x4/MyMatrix4x4.h"
 
 class Player {
 public:
@@ -24,6 +25,8 @@ private:
 	//	キーボード入力
 	Input* input_ = nullptr;
 
+	//	matrix
+	MyMatrix4x4 matrix;
 
 	//	ワールド変換データ
 	WorldTransform worldTransform_;
