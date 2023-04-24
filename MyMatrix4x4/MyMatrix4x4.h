@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include "MyVector3.h"
+#include "Matrix4x4.h"
+#include "Vector3.h"
 
 class MyMatrix4x4
 {
@@ -7,13 +8,9 @@ public:
 	MyMatrix4x4();
 	~MyMatrix4x4();
 
-	struct Matrix4x4 final {
-		float m[4][4];
-	};
-
 private:
 	Matrix4x4 result;
-	MyVector3 resultVec;
+	Vector3 resultVec;
 	const int num;
 	//	値の初期化
 	void Reset();
