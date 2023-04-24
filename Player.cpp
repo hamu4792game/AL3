@@ -41,9 +41,17 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
 	};
-
 	//	座標移動（ベクトルの加算）
 	worldTransform_.translation_ += move;
+
+	//	移動限界座標
+	const float kMoveLimitX = 34.0f;
+	const float kMoveLimitY = 18.0f;
+	//	範囲を超えない処理
+	worldTransform_.translation_.x =
+	    std::clamp(worldTransform_.translation_.x, -kMoveLimitX, kMoveLimitX);
+	worldTransform_.translation_.y =
+	    std::clamp(worldTransform_.translation_.y, -kMoveLimitY, kMoveLimitY);
 
 	//	アフィン変換
 	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(

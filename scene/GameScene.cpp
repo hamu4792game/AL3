@@ -5,7 +5,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
-	
+	delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -23,12 +23,22 @@ void GameScene::Initialize() {
 	player = std::make_unique<Player>();
 	//	自キャラの初期化
 	player->Initialize(playerModel, playerTexture);
+	//	デバッグカメラの生成
+	debugCamera_ = new DebugCamera(1280, 720);
 }
 
 void GameScene::Update() { 
 	//	自キャラの更新
 	player->Update();
+	//	デバッグカメラの更新
+	debugCamera_->Update();
+#ifdef DEBUG
+	if (input_->TriggerKey(DIK_5)) {
+		isDebugCameraActive_ = true;
+	}
+#endif // DEBUG
 
+	
 }
 
 void GameScene::Draw() {
