@@ -41,6 +41,8 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
 	};
+	//	回転
+	Rotate();
 	//	座標移動（ベクトルの加算）
 	worldTransform_.translation_ += move;
 
@@ -52,6 +54,13 @@ void Player::Update() {
 	    std::clamp(worldTransform_.translation_.x, -kMoveLimitX, kMoveLimitX);
 	worldTransform_.translation_.y =
 	    std::clamp(worldTransform_.translation_.y, -kMoveLimitY, kMoveLimitY);
+
+	//	キャラクター攻撃処理
+	Attack();
+	//	弾更新
+	if (bullet_) {
+		bullet_->Update();
+	};
 
 	//	アフィン変換
 	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(
@@ -70,4 +79,33 @@ void Player::Update() {
 
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	if (bullet_) {
+		bullet_->Draw(viewProjection);
+	}
+}
+
+void Player::Rotate() {
+	//	回転速さ[ラジアン/frame]
+	const float kRotSpeed = 0.02f;
+	//	押した方向で移動ベクトルを変更
+	if (input_->PushKey(DIK_A)) {
+		//	右回転
+		worldTransform_.rotation_.y -= kRotSpeed;
+	} else if (input_->PushKey(DIK_D)) {
+		//	左回転
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+}
+
+void Player::Attack() {
+	if (input_->TriggerKey(DIK_SPACE)) {
+		//	既に弾が存在していたら、弾を解放する
+		if (!bullet_) {
+			bullet_.reset();
+		}
+
+		//	弾を生成し、初期化
+		bullet_ = std::make_unique<PlayerBullet>();
+		bullet_->Initialize(model_, worldTransform_.translation_);
+	}
 }

@@ -5,6 +5,7 @@
 #include <memory>
 #include "Input.h"
 #include "MyMatrix4x4/MyMatrix4x4.h"
+#include "PlayerBullet.h"
 
 class Player {
 public:
@@ -35,5 +36,16 @@ private:
 	//	テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
+	//	弾
+	std::unique_ptr<PlayerBullet> bullet_;
+
+private:
+	//	自機の回転
+	void Rotate();
+
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
 
 };
