@@ -40,5 +40,6 @@ private:
 	std::shared_ptr<Model> model_;
 	//	テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
+	
 
 };

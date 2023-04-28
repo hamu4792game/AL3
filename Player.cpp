@@ -58,9 +58,9 @@ void Player::Update() {
 	//	キャラクター攻撃処理
 	Attack();
 	//	弾更新
-	if (bullet_) {
-		bullet_->Update();
-	};
+	for (auto i = bullets_.begin(); i != bullets_.end(); i++) {
+		(*i)->Update();
+	}
 
 	//	アフィン変換
 	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(
@@ -79,8 +79,9 @@ void Player::Update() {
 
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	//	弾更新
+	for (auto i = bullets_.begin(); i != bullets_.end(); i++) {
+		(*i)->Draw(viewProjection);
 	}
 }
 
@@ -99,13 +100,10 @@ void Player::Rotate() {
 
 void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
-		//	既に弾が存在していたら、弾を解放する
-		if (!bullet_) {
-			bullet_.reset();
-		}
-
-		//	弾を生成し、初期化
-		bullet_ = std::make_unique<PlayerBullet>();
-		bullet_->Initialize(model_, worldTransform_.translation_);
+		//	弾を登録する
+		bullets_.push_back(std::make_unique<PlayerBullet>());
+		//	今追加したものの初期化処理
+		//	rbegin() 逆イテレーター
+		(*bullets_.rbegin())->Initialize(model_,worldTransform_.translation_);
 	}
 }

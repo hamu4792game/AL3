@@ -16,6 +16,7 @@ void PlayerBullet::Initialize(std::shared_ptr<Model> model, const Vector3& posit
 	worldTransform_.Initialize();
 	//	引数で受け取った初期座標をリセット
 	worldTransform_.translation_ = position;
+
 }
 
 void PlayerBullet::Update() { 

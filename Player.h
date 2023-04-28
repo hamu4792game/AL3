@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "MyMatrix4x4/MyMatrix4x4.h"
 #include "PlayerBullet.h"
+#include <list>
 
 class Player {
 public:
@@ -37,7 +38,7 @@ private:
 	uint32_t textureHandle_ = 0u;
 
 	//	弾
-	std::unique_ptr<PlayerBullet> bullet_;
+	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
 private:
 	//	自機の回転
