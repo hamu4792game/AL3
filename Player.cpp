@@ -24,6 +24,11 @@ void Player::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle) {
 }
 
 void Player::Update() { 
+	//	デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
+		return bullet->IsDead();
+		});
+
 	worldTransform_.TransferMatrix();
 	//	キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
@@ -100,10 +105,17 @@ void Player::Rotate() {
 
 void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
+		//	弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+
+		//	速度ベクトルを自機の向きに合わせて回転させる
+		velocity = matrix.Transform(velocity, matrix.MakeRotateYMatrix(worldTransform_.rotation_.y));
+
 		//	弾を登録する
 		bullets_.push_back(std::make_unique<PlayerBullet>());
 		//	今追加したものの初期化処理
 		//	rbegin() 逆イテレーター
-		(*bullets_.rbegin())->Initialize(model_,worldTransform_.translation_);
+		(*bullets_.rbegin())->Initialize(model_, worldTransform_.translation_, velocity);
 	}
 }
