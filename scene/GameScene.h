@@ -8,9 +8,10 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Player.h"
 #include <memory>
 #include "DebugCamera.h"
+#include "Player.h"
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -54,13 +55,18 @@ private: // メンバ変数
 	/// </summary>
 	//	テクスチャハンドル
 	uint32_t playerTexture = 0;
+	uint32_t enemyTexture = 0;
 	//	3Dモデル
 	std::weak_ptr<Model> playerObsever;
 	std::shared_ptr<Model> playerModel;
+	std::weak_ptr<Model> enemyObsever;
+	std::shared_ptr<Model> enemyModel;
 	//	ビュープロジェクション
 	ViewProjection viewProjection;
 	//	自キャラ
 	std::unique_ptr<Player> player;
+	//	敵キャラ
+	std::unique_ptr<Enemy> enemy;
 	//	デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	//	デバッグカメラ

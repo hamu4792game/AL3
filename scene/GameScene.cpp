@@ -15,15 +15,31 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	//	playerモデルの生成
 	playerTexture = TextureManager::Load("Player/player.png");
 	playerModel.reset(Model::Create());
 	playerObsever = playerModel;
+	
+	//	enemyモデルの生成
+	enemyTexture = TextureManager::Load("Player/player.png");
+	enemyModel.reset(Model::Create());
+	enemyObsever = enemyModel;
+
+
 	viewProjection.Initialize();
 
 	//	自キャラの生成
 	player = std::make_unique<Player>();
+	//	敵キャラの生成
+	enemy = std::make_unique<Enemy>();
+
+
 	//	自キャラの初期化
 	player->Initialize(playerModel, playerTexture);
+	//	敵キャラの初期化
+	enemy->Initialize(enemyModel, enemyTexture);
+
+
 	//	デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 	//	軸方向表示の表示を有効にする
@@ -35,7 +51,9 @@ void GameScene::Initialize() {
 void GameScene::Update() { 
 	//	自キャラの更新
 	player->Update();
-	
+	//	敵キャラの更新
+	enemy->Update();
+
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_5)) {
 		isDebugCameraActive_ = true;
@@ -87,6 +105,9 @@ void GameScene::Draw() {
 
 	//	自キャラの描画
 	player->Draw(viewProjection);
+
+	//	敵キャラの描画
+	enemy->Draw(viewProjection);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

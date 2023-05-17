@@ -31,7 +31,7 @@ void Player::Update() {
 
 	worldTransform_.TransferMatrix();
 	//	キャラクターの移動ベクトル
-	Vector3 move = {0, 0, 0};
+	Vector3 move = {0.0f, 0.0f, 0.0f};
 	//	キャラクターの移動速さ
 	const float kCharacterSpeed = 0.2f;
 	//	押した方向で移動ベクトルを変更（左右）
