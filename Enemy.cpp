@@ -27,6 +27,7 @@ void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle)
 
 void Enemy::Update()
 {
+
 	switch (phase_)
 	{
 	case Phase::Apprpach:
