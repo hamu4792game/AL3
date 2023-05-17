@@ -21,13 +21,13 @@ void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle)
 	//	ワールド変換の初期化
 	this->worldTransform_.Initialize();
 	//	初期座標の設定
-	this->worldTransform_.translation_ = { 0.0f,2.0f,100.0f };
+	this->worldTransform_.translation_ = { 0.0f,2.0f,50.0f };
 }
 
 void Enemy::Update()
 {
 	//	移動量
-	Vector3 move = { 0.0f,0.0f,-0.1f };
+	Vector3 move = { 0.0f,0.0f,-0.5f };
 	//	座標移動
 	worldTransform_.translation_ += move;
 

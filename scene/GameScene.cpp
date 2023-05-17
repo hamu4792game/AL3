@@ -21,7 +21,7 @@ void GameScene::Initialize() {
 	playerObsever = playerModel;
 	
 	//	enemyモデルの生成
-	enemyTexture = TextureManager::Load("Player/player.png");
+	enemyTexture = TextureManager::Load("Player/enemy.png");
 	enemyModel.reset(Model::Create());
 	enemyObsever = enemyModel;
 
