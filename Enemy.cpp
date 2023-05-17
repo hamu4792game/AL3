@@ -4,6 +4,7 @@
 
 Enemy::Enemy()
 {
+	move = { 0.0f,0.0f,0.0f };
 }
 
 Enemy::~Enemy()
@@ -26,10 +27,25 @@ void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle)
 
 void Enemy::Update()
 {
-	//	移動量
-	Vector3 move = { 0.0f,0.0f,-0.5f };
+	switch (phase_)
+	{
+	case Phase::Apprpach:
+		move = { 0.0f,0.0f,-0.5f };
+		if (worldTransform_.translation_.z <= 0.0f)
+		{
+			phase_ = Phase::Leave;
+		}
+		break;
+	case Phase::Leave:
+		move = { -0.5f,0.2f,0.0f };
+		break;
+	}
+
 	//	座標移動
 	worldTransform_.translation_ += move;
+
+
+
 
 	//	アフィン変換
 	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(

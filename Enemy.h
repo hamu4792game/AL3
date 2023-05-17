@@ -30,8 +30,18 @@ private:
 	std::shared_ptr<Model> model_;
 	//	テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
-
 	//	マトリックス
 	MyMatrix4x4 matrix;
+
+	//	行動フェーズ
+	enum class Phase
+	{
+		Apprpach,	//	接近する
+		Leave,		//	離脱する
+	};
+	Phase phase_ = Phase::Apprpach;
+
+	//	移動量
+	Vector3 move;
 };
 
