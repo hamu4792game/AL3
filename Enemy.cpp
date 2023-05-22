@@ -66,3 +66,9 @@ void Enemy::Draw(ViewProjection& viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
+
+void Enemy::Reset()
+{
+	this->worldTransform_.translation_ = { 0.0f,2.0f,50.0f };
+	phase_ = Phase::Apprpach;
+}

@@ -54,6 +54,11 @@ void GameScene::Update() {
 	//	敵キャラの更新
 	enemy->Update();
 
+	if (input_->PushKey(DIK_R))
+	{
+		enemy->Reset();
+	}
+
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_5)) {
 		isDebugCameraActive_ = true;

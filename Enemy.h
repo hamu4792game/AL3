@@ -23,6 +23,8 @@ public:
 	//	描画
 	void Draw(ViewProjection& viewProjection);
 
+	void Reset();
+
 private:
 	//	ワールド変換データ
 	WorldTransform worldTransform_;
