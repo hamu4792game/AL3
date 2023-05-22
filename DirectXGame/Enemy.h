@@ -42,6 +42,13 @@ private:
 		Leave,		//	離脱する
 	};
 	Phase phase_ = Phase::Apprpach;
+public:
+	//	自作メンバ関数
+	void Move1();
+	void Move2();
+private:
+	//	メンバ関数ポインタ
+	static void (Enemy::* pPhaseTable[])();
 
 	//	移動量
 	Vector3 move;

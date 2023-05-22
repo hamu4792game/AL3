@@ -23,12 +23,20 @@ void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle)
 	this->worldTransform_.Initialize();
 	//	初期座標の設定
 	this->worldTransform_.translation_ = { 0.0f,2.0f,50.0f };
+
 }
+
+//	staticで宣言したメンバ関数ポインタテーブルの実体
+void (Enemy::* Enemy::pPhaseTable[])() = {
+	&Enemy::Move1,
+	&Enemy::Move2,
+};
+
 
 void Enemy::Update()
 {
 
-	switch (phase_)
+	/*switch (phase_)
 	{
 	case Phase::Apprpach:
 		move = { 0.0f,0.0f,-0.5f };
@@ -40,13 +48,13 @@ void Enemy::Update()
 	case Phase::Leave:
 		move = { -0.5f,0.2f,0.0f };
 		break;
-	}
+	}*/
+
+	//	現在フェーズの関数を実行
+	(this->*pPhaseTable[static_cast<size_t>(phase_)])();
 
 	//	座標移動
 	worldTransform_.translation_ += move;
-
-
-
 
 	//	アフィン変換
 	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(
@@ -71,4 +79,18 @@ void Enemy::Reset()
 {
 	this->worldTransform_.translation_ = { 0.0f,2.0f,50.0f };
 	phase_ = Phase::Apprpach;
+}
+
+void Enemy::Move1()
+{
+	move = { 0.0f,0.0f,-0.5f };
+	if (worldTransform_.translation_.z <= 0.0f)
+	{
+		phase_ = Phase::Leave;
+	}
+}
+
+void Enemy::Move2()
+{
+	move = { -0.5f,0.2f,0.0f };
 }
