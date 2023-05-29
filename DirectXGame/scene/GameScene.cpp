@@ -38,7 +38,8 @@ void GameScene::Initialize() {
 	player->Initialize(playerModel, playerTexture);
 	//	敵キャラの初期化
 	enemy->Initialize(enemyModel, enemyTexture);
-
+	//	敵キャラに自キャラのアドレスを渡す
+	enemy->SetPlayer(player.get());
 
 	//	デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);

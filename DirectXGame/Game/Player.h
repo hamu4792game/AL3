@@ -49,4 +49,11 @@ private:
 	/// </summary>
 	void Attack();
 
+public:
+	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	/// <returns>Vector3</returns>
+	Vector3 GetWorldPosition();
+
 };

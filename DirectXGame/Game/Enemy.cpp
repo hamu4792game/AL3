@@ -1,6 +1,7 @@
 ﻿#include "Game/Enemy.h"
 #include <cassert>
 #include "ImGuiManager.h"
+#include "Game/Player.h"
 
 Enemy::Enemy()
 {
@@ -22,7 +23,7 @@ void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle)
 	//	ワールド変換の初期化
 	this->worldTransform_.Initialize();
 	//	初期座標の設定
-	this->worldTransform_.translation_ = { 5.0f,0.0f,50.0f };
+	this->worldTransform_.translation_ = { 10.0f,0.0f,50.0f };
 
 }
 
@@ -84,7 +85,7 @@ void Enemy::Draw(ViewProjection& viewProjection)
 
 void Enemy::Reset()
 {
-	this->worldTransform_.translation_ = { 5.0f,0.0f,50.0f };
+	this->worldTransform_.translation_ = { 10.0f,0.0f,50.0f };
 	phase_ = Phase::Apprpach;
 }
 
@@ -100,12 +101,16 @@ void Enemy::Move2()
 
 void Enemy::Fire()
 {
+	assert(player_);
 	//	弾の速度
-	const float kBulletSpeed = -3.0f;
+	const float kBulletSpeed = 2.0f;
 	Vector3 velocity(0, 0, kBulletSpeed);
 
-	//	速度ベクトルを自機の向きに合わせて回転させる
-	velocity = matrix.Transform(velocity, matrix.MakeRotateYMatrix(worldTransform_.rotation_.y));
+	Vector3 playerPos = player_->GetWorldPosition();
+	Vector3 enemyPos = worldTransform_.translation_;
+	Vector3 differencialVector = playerPos - enemyPos;
+	differencialVector = Normalize(differencialVector);
+	velocity = differencialVector * kBulletSpeed;
 
 	//	弾を登録する
 	bullets_.push_back(std::make_unique<EnemyBullet>());
@@ -113,4 +118,14 @@ void Enemy::Fire()
 	//	rbegin() 逆イテレーター
 	(*bullets_.rbegin())->Initialize(model_, worldTransform_.translation_, velocity);
 	
+}
+
+Vector3 Enemy::GetWorldPosition()
+{
+	Vector3 worldPos;
+	//	ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+	return worldPos;
 }

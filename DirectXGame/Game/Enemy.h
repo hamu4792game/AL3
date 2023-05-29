@@ -9,6 +9,9 @@
 #include "Game/EnemyBullet.h"
 #include <list>
 
+//	クラスの前方宣言
+class Player;
+
 class Enemy
 {
 public:
@@ -51,6 +54,12 @@ private:
 	static const int32_t kFireInterval = 60;
 	int32_t timer = 0;
 
+	//	自キャラ
+	Player* player_ = nullptr;
+public:
+	//	アドレスのセッター
+	void SetPlayer(Player* player) { player_ = player; };
+
 public:
 	//	自作メンバ関数
 	void Move1();
@@ -67,5 +76,12 @@ public:
 	/// 弾発射
 	/// </summary>
 	void Fire();
+
+public:
+	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	/// <returns>Vector3</returns>
+	Vector3 GetWorldPosition();
 };
 
