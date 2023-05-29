@@ -67,6 +67,9 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{a7e9b4d1-c002-4d46-9958-0f800acd6c94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EnemyBullet">
+      <UniqueIdentifier>{6effe404-6088-4433-8845-0e0d80ce9161}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -84,14 +87,8 @@
     <ClCompile Include="2d\ImGuiManager.cpp">
       <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
     <ClCompile Include="MyMatrix4x4\MyMatrix4x4.cpp">
       <Filter>MyMatrix4x4</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerBullet.cpp">
-      <Filter>PlayerBullet</Filter>
     </ClCompile>
     <ClCompile Include="3d\WorldTransform.cpp">
       <Filter>ソース ファイル\3d</Filter>
@@ -99,8 +96,17 @@
     <ClCompile Include="math\Vector3.cpp">
       <Filter>ソース ファイル\math</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="Game\Enemy.cpp">
       <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\PlayerBullet.cpp">
+      <Filter>PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\EnemyBullet.cpp">
+      <Filter>EnemyBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,17 +194,20 @@
     <ClInclude Include="2d\ImGuiManager.h">
       <Filter>ヘッダー ファイル\2d</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="MyMatrix4x4\MyMatrix4x4.h">
       <Filter>MyMatrix4x4</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerBullet.h">
+    <ClInclude Include="Game\Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\PlayerBullet.h">
       <Filter>PlayerBullet</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Enemy</Filter>
+    <ClInclude Include="Game\EnemyBullet.h">
+      <Filter>EnemyBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿#include "Enemy.h"
+﻿#include "Game/Enemy.h"
 #include <cassert>
 #include "ImGuiManager.h"
 
@@ -22,7 +22,7 @@ void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle)
 	//	ワールド変換の初期化
 	this->worldTransform_.Initialize();
 	//	初期座標の設定
-	this->worldTransform_.translation_ = { 0.0f,2.0f,50.0f };
+	this->worldTransform_.translation_ = { 5.0f,0.0f,50.0f };
 
 }
 
@@ -35,26 +35,29 @@ void (Enemy::* Enemy::pPhaseTable[])() = {
 
 void Enemy::Update()
 {
+	//	デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
+		return bullet->IsDead();
+		});
 
-	/*switch (phase_)
-	{
-	case Phase::Apprpach:
-		move = { 0.0f,0.0f,-0.5f };
-		if (worldTransform_.translation_.z <= 0.0f)
-		{
-			phase_ = Phase::Leave;
-		}
-		break;
-	case Phase::Leave:
-		move = { -0.5f,0.2f,0.0f };
-		break;
-	}*/
 
 	//	現在フェーズの関数を実行
 	(this->*pPhaseTable[static_cast<size_t>(phase_)])();
 
 	//	座標移動
 	worldTransform_.translation_ += move;
+
+	//	時間の加算
+	timer--;
+	//	キャラクター攻撃処理
+	if (timer <= 0) {
+		Fire();
+		timer = 20;
+	}
+	//	弾更新
+	for (auto i = bullets_.begin(); i != bullets_.end(); i++) {
+		(*i)->Update();
+	}
 
 	//	アフィン変換
 	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(
@@ -73,24 +76,41 @@ void Enemy::Update()
 void Enemy::Draw(ViewProjection& viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	//	弾更新
+	for (auto i = bullets_.begin(); i != bullets_.end(); i++) {
+		(*i)->Draw(viewProjection);
+	}
 }
 
 void Enemy::Reset()
 {
-	this->worldTransform_.translation_ = { 0.0f,2.0f,50.0f };
+	this->worldTransform_.translation_ = { 5.0f,0.0f,50.0f };
 	phase_ = Phase::Apprpach;
 }
 
 void Enemy::Move1()
 {
 	move = { 0.0f,0.0f,-0.5f };
-	if (worldTransform_.translation_.z <= 0.0f)
-	{
-		phase_ = Phase::Leave;
-	}
 }
 
 void Enemy::Move2()
 {
 	move = { -0.5f,0.2f,0.0f };
+}
+
+void Enemy::Fire()
+{
+	//	弾の速度
+	const float kBulletSpeed = -3.0f;
+	Vector3 velocity(0, 0, kBulletSpeed);
+
+	//	速度ベクトルを自機の向きに合わせて回転させる
+	velocity = matrix.Transform(velocity, matrix.MakeRotateYMatrix(worldTransform_.rotation_.y));
+
+	//	弾を登録する
+	bullets_.push_back(std::make_unique<EnemyBullet>());
+	//	今追加したものの初期化処理
+	//	rbegin() 逆イテレーター
+	(*bullets_.rbegin())->Initialize(model_, worldTransform_.translation_, velocity);
+	
 }

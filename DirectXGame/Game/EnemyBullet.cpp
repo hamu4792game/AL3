@@ -1,12 +1,10 @@
-﻿#include "PlayerBullet.h"
+﻿#include "Game/EnemyBullet.h"
 #include <cassert>
 
-PlayerBullet::PlayerBullet() {}
+EnemyBullet::EnemyBullet() {};
+EnemyBullet::~EnemyBullet() {}
 
-PlayerBullet::~PlayerBullet() {}
-
-void PlayerBullet::Initialize(
-    std::shared_ptr<Model> model, const Vector3& position, const Vector3& velocity)
+void EnemyBullet::Initialize(std::shared_ptr<Model> model, const Vector3& position, const Vector3& velocity)
 {
 	//	NULLポインタチェック
 	assert(model);
@@ -23,7 +21,8 @@ void PlayerBullet::Initialize(
 
 }
 
-void PlayerBullet::Update() { 
+void EnemyBullet::Update()
+{
 	//	座標を更新
 	worldTransform_.translation_ += velocity_;
 
@@ -35,9 +34,12 @@ void PlayerBullet::Update() {
 	{
 		isDead_ = true;
 	}
-
 }
 
-void PlayerBullet::Draw(const ViewProjection& viewProjection) {
+void EnemyBullet::Draw(const ViewProjection& viewProjection)
+{
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
+;
+
+

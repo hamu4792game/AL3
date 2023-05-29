@@ -6,6 +6,8 @@
 #include <memory>
 #include "Input.h"
 #include "MyMatrix4x4/MyMatrix4x4.h"
+#include "Game/EnemyBullet.h"
+#include <list>
 
 class Enemy
 {
@@ -42,6 +44,13 @@ private:
 		Leave,		//	離脱する
 	};
 	Phase phase_ = Phase::Apprpach;
+
+	//	弾
+	std::list<std::unique_ptr<EnemyBullet>> bullets_;
+	//	発射速度
+	static const int32_t kFireInterval = 60;
+	int32_t timer = 0;
+
 public:
 	//	自作メンバ関数
 	void Move1();
@@ -52,5 +61,11 @@ private:
 
 	//	移動量
 	Vector3 move;
+
+public:
+	/// <summary>
+	/// 弾発射
+	/// </summary>
+	void Fire();
 };
 

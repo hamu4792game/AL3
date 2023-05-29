@@ -5,7 +5,7 @@
 #include <memory>
 #include "Input.h"
 #include "MyMatrix4x4/MyMatrix4x4.h"
-#include "PlayerBullet.h"
+#include "Game/PlayerBullet.h"
 #include <list>
 
 class Player {
