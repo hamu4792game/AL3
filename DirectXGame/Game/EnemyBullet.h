@@ -53,5 +53,14 @@ private:
 	bool isDead_ = false;
 
 public:
+
+	/// <summary>
+	/// 衝突を検出したら呼び出されるコールバック関数
+	/// </summary>
+	void OnCollision();
+
+	//
 	bool IsDead() const { return isDead_; }
+	Vector3 GetWorldPosition() const { return worldTransform_.translation_; }
+
 };

@@ -72,4 +72,10 @@ private: // メンバ変数
 	//	デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 
+public:
+	/// <summary>
+	/// 衝突判定と応答
+	/// </summary>
+	void CheckAllCollisions();
+
 };

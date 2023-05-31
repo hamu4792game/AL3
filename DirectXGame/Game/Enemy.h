@@ -83,5 +83,16 @@ public:
 	/// </summary>
 	/// <returns>Vector3</returns>
 	Vector3 GetWorldPosition();
+
+	/// <summary>
+	/// 衝突を検出したら呼び出されるコールバック関数
+	/// </summary>
+	void OnCollision();
+
+	/// <summary>
+	/// 弾リストを取得
+	/// </summary>
+	/// <returns>bullet->List</returns>
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; };
 };
 

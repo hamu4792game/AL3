@@ -59,6 +59,7 @@ void GameScene::Update() {
 	{
 		enemy->Reset();
 	}
+	CheckAllCollisions();
 
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_5)) {
@@ -131,4 +132,73 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollisions()
+{
+	//	判定対象AとBの座標
+	Vector3 posA, posB;
+
+	//	自弾リストの取得
+	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player->GetBullets();
+	//	敵弾リストの取得
+	const std::list<std::unique_ptr<EnemyBullet>>& enemyBullets = enemy->GetBullets();
+#pragma region 自キャラと敵弾の当たり判定
+	//	自キャラの座標
+	posA = player->GetWorldPosition();
+
+	for (const auto& bullet : enemyBullets)
+	{
+		//	敵弾の座標
+		posB = bullet->GetWorldPosition();
+		//	座標Aと座標Bの距離を求める
+		float distance = powf(posB.x - posA.x, 2.0f) + powf(posB.y - posA.y, 2.0f) + powf(posB.z - posA.z, 2.0f);
+		if (distance <= powf(1.0f + 1.0f, 2.0f))
+		{
+			player->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+
+#pragma endregion
+#pragma region 自弾と敵キャラの当たり判定
+	//	敵キャラの座標
+	posA = enemy->GetWorldPosition();
+
+	for (const auto& bullet : playerBullets)
+	{
+		//	自弾の座標
+		posB = bullet->GetWorldPosition();
+		//	座標Aと座標Bの距離を求める
+		float distance = powf(posB.x - posA.x, 2.0f) + powf(posB.y - posA.y, 2.0f) + powf(posB.z - posA.z, 2.0f);
+		if (distance <= powf(1.0f + 1.0f, 2.0f))
+		{
+			enemy->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+
+#pragma endregion
+#pragma region 自弾と敵弾の当たり判定
+	for (const auto& pBullet : playerBullets)
+	{
+		//	自弾の座標
+		posA = pBullet->GetWorldPosition();
+		for (const auto& eBullet : enemyBullets)
+		{
+			//	自弾の座標
+			posB = eBullet->GetWorldPosition();
+			//	座標Aと座標Bの距離を求める
+			float distance = powf(posB.x - posA.x, 2.0f) + powf(posB.y - posA.y, 2.0f) + powf(posB.z - posA.z, 2.0f);
+			if (distance <= powf(1.0f + 1.0f, 2.0f))
+			{
+				pBullet->OnCollision();
+				eBullet->OnCollision();
+			}
+		}
+	}
+
+#pragma endregion
+
+
 }

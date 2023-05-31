@@ -13,7 +13,7 @@ void PlayerBullet::Initialize(
 
 	model_ = model;
 	//	テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("white1x1.png");
+	textureHandle_ = TextureManager::Load("black1x1.png");
 	//	ワールド変換の初期化
 	worldTransform_.Initialize();
 	//	引数で受け取った初期座標をリセット
@@ -40,4 +40,9 @@ void PlayerBullet::Update() {
 
 void PlayerBullet::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+}
+
+void PlayerBullet::OnCollision()
+{
+	isDead_ = true;
 }

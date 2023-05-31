@@ -11,7 +11,7 @@ void EnemyBullet::Initialize(std::shared_ptr<Model> model, const Vector3& positi
 
 	model_ = model;
 	//	テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("white1x1.png");
+	textureHandle_ = TextureManager::Load("red1x1.png");
 	//	ワールド変換の初期化
 	worldTransform_.Initialize();
 	//	引数で受け取った初期座標をリセット
@@ -40,6 +40,10 @@ void EnemyBullet::Draw(const ViewProjection& viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
-;
+
+void EnemyBullet::OnCollision()
+{
+	isDead_ = true;
+}
 
 
