@@ -25,6 +25,11 @@ void GameScene::Initialize() {
 	enemyModel.reset(Model::Create());
 	enemyObsever = enemyModel;
 
+	//	skydomeモデルの生成
+	enemyTexture = TextureManager::Load("Player/enemy.png");
+	skydomeModel.reset(Model::CreateFromOBJ("skydome", true));
+	skydomeObsever = skydomeModel;
+
 
 	viewProjection.Initialize();
 
@@ -32,12 +37,16 @@ void GameScene::Initialize() {
 	player = std::make_unique<Player>();
 	//	敵キャラの生成
 	enemy = std::make_unique<Enemy>();
+	//	天球の生成
+	skydome = std::make_unique<Skydome>();
 
 
 	//	自キャラの初期化
 	player->Initialize(playerModel, playerTexture);
 	//	敵キャラの初期化
 	enemy->Initialize(enemyModel, enemyTexture);
+	//	天球の初期化
+	enemy->Initialize(skydomeModel, skydomeTexture);
 	//	敵キャラに自キャラのアドレスを渡す
 	enemy->SetPlayer(player.get());
 
@@ -54,6 +63,8 @@ void GameScene::Update() {
 	player->Update();
 	//	敵キャラの更新
 	enemy->Update();
+	//	天球の更新
+	skydome->Update();
 
 	if (input_->PushKey(DIK_R))
 	{
@@ -79,8 +90,6 @@ void GameScene::Update() {
 	}
 #endif
 
-
-	
 }
 
 void GameScene::Draw() {
@@ -109,6 +118,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	//	自キャラの描画
+	skydome->Draw(viewProjection);
 
 	//	自キャラの描画
 	player->Draw(viewProjection);

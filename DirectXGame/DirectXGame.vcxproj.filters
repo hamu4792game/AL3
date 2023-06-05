@@ -70,6 +70,9 @@
     <Filter Include="EnemyBullet">
       <UniqueIdentifier>{6effe404-6088-4433-8845-0e0d80ce9161}</UniqueIdentifier>
     </Filter>
+    <Filter Include="skydome">
+      <UniqueIdentifier>{43a4a65d-1b74-40fd-920a-62e2c7b9b6af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="Game\EnemyBullet.cpp">
       <Filter>EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\skydome.cpp">
+      <Filter>skydome</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Game\EnemyBullet.h">
       <Filter>EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\skydome.h">
+      <Filter>skydome</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,7 @@
 #include "DebugCamera.h"
 #include "Game/Player.h"
 #include "Game/Enemy.h"
+#include "Game/skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -56,17 +57,22 @@ private: // メンバ変数
 	//	テクスチャハンドル
 	uint32_t playerTexture = 0;
 	uint32_t enemyTexture = 0;
+	uint32_t skydomeTexture = 0;
 	//	3Dモデル
 	std::weak_ptr<Model> playerObsever;
 	std::shared_ptr<Model> playerModel;
 	std::weak_ptr<Model> enemyObsever;
 	std::shared_ptr<Model> enemyModel;
+	std::weak_ptr<Model> skydomeObsever;
+	std::shared_ptr<Model> skydomeModel;
 	//	ビュープロジェクション
 	ViewProjection viewProjection;
 	//	自キャラ
 	std::unique_ptr<Player> player;
 	//	敵キャラ
 	std::unique_ptr<Enemy> enemy;
+	//	天球
+	std::unique_ptr<Skydome> skydome;
 	//	デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	//	デバッグカメラ
