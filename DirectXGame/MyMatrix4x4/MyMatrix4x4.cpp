@@ -2,75 +2,61 @@
 #include <cassert>
 #include <cmath>
 
-MyMatrix4x4::MyMatrix4x4():num(4) {
-	for (int y = 0; y < num; y++)
-	{
-		for (int x = 0; x < num; x++)
-		{
-			result.m[y][x] = 0.0f;
-		}
-	}
-	resultVec = { 0.0f,0.0f,0.0f };
-}
+MyMatrix4x4::MyMatrix4x4() : m({ 0.0f }) {}
 
-MyMatrix4x4::~MyMatrix4x4() {
-
-}
-
-void MyMatrix4x4::Reset() {
-	for (int y = 0; y < num; y++)
-	{
-		for (int x = 0; x < num; x++)
-		{
-			result.m[y][x] = 0.0f;
-		}
-	}
-	resultVec = { 0.0f,0.0f,0.0f };
-}
+MyMatrix4x4::~MyMatrix4x4() {}
 
 //	加算
-Matrix4x4 MyMatrix4x4::Add(const Matrix4x4& m1, const Matrix4x4& m2) {
-	for (int y = 0; y < num; y++)
+MyMatrix4x4 MyMatrix4x4::operator+(const MyMatrix4x4& mat)
+{
+	MyMatrix4x4 result;
+	for (int y = 0; y < result.m.size(); y++)
 	{
-		for (int x = 0; x < num; x++)
+		for (int x = 0; x < result.m.size(); x++)
 		{
-			result.m[y][x] = m1.m[y][x] + m2.m[y][x];
+			result.m[y][x] = this->m[y][x] + mat.m[y][x];
 		}
 	}
-
 	return result;
 }
 //	減算
-Matrix4x4 MyMatrix4x4::Subtract(const Matrix4x4& m1, const Matrix4x4& m2) {
-	for (int y = 0; y < num; y++)
+MyMatrix4x4 MyMatrix4x4::operator-(const MyMatrix4x4& mat)
+{
+	MyMatrix4x4 result;
+	for (int y = 0; y < result.m.size(); y++)
 	{
-		for (int x = 0; x < num; x++)
+		for (int x = 0; x < result.m.size(); x++)
 		{
-			result.m[y][x] = m1.m[y][x] - m2.m[y][x];
+			result.m[y][x] = this->m[y][x] - mat.m[y][x];
 		}
 	}
-
 	return result;
 }
 //	行列の積
-Matrix4x4 MyMatrix4x4::Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
-	Reset();
+MyMatrix4x4 MyMatrix4x4::operator*(const MyMatrix4x4& mat)
+{
+	MyMatrix4x4 result;
 
-	for (int z = 0; z < num; z++)
-	{
-		for (int y = 0; y < num; y++)
+	for (int y = 0; y < m.size(); y++){
+		for (int x = 0; x < m.begin()->size(); x++)
 		{
-			for (int x = 0; x < num; x++)
-			{
-				result.m[z][y] += m1.m[z][x] * m2.m[x][y];
+			for (int i = 0; i < 4; i++) {
+				result.m[y][x] += m[y][i] * mat.m[i][x];
 			}
 		}
 	}
 
 	return result;
 }
+
+MyMatrix4x4& MyMatrix4x4::operator=(const MyMatrix4x4& mat)
+{
+	m = mat.m;
+	return *this;
+}
 //	逆行列
-Matrix4x4 MyMatrix4x4::Inverse(const Matrix4x4& m) {
+MyMatrix4x4 Inverse(const MyMatrix4x4& m) {
+	MyMatrix4x4 result;
 	float A = 0.0f;
 	A = m.m[0][0] * m.m[1][1] * m.m[2][2] * m.m[3][3] +
 		m.m[0][0] * m.m[1][2] * m.m[2][3] * m.m[3][1] +
@@ -117,7 +103,7 @@ Matrix4x4 MyMatrix4x4::Inverse(const Matrix4x4& m) {
 		m.m[0][3] * m.m[1][1] * m.m[3][2] -
 		m.m[0][3] * m.m[1][2] * m.m[3][1] -
 		m.m[0][2] * m.m[1][1] * m.m[3][3] -
-		m.m[0][1] * m.m[1][3] * m.m[2][2]) / A;
+		m.m[0][1] * m.m[1][3] * m.m[3][2]) / A;
 	result.m[0][3] = (-m.m[0][1] * m.m[1][2] * m.m[2][3] -
 		m.m[0][2] * m.m[1][3] * m.m[2][1] -
 		m.m[0][3] * m.m[1][1] * m.m[2][2] +
@@ -129,11 +115,11 @@ Matrix4x4 MyMatrix4x4::Inverse(const Matrix4x4& m) {
 		m.m[1][2] * m.m[2][3] * m.m[3][0] -
 		m.m[1][3] * m.m[2][0] * m.m[3][2] +
 		m.m[1][3] * m.m[2][2] * m.m[3][0] +
-		m.m[1][2] * m.m[1][1] * m.m[3][2] +
+		m.m[1][2] * m.m[2][0] * m.m[3][3] +
 		m.m[1][0] * m.m[2][3] * m.m[3][2]) / A;
 	result.m[1][1] = (m.m[0][0] * m.m[2][2] * m.m[3][3] +
 		m.m[0][2] * m.m[2][3] * m.m[3][0] +
-		m.m[0][3] * m.m[2][0] * m.m[0][3] -
+		m.m[0][3] * m.m[2][0] * m.m[3][2] -
 		m.m[0][3] * m.m[2][2] * m.m[3][0] -
 		m.m[0][2] * m.m[2][0] * m.m[3][3] -
 		m.m[0][0] * m.m[2][3] * m.m[3][2]) / A;
@@ -165,7 +151,7 @@ Matrix4x4 MyMatrix4x4::Inverse(const Matrix4x4& m) {
 	result.m[2][2] = (m.m[0][0] * m.m[1][1] * m.m[3][3] +
 		m.m[0][1] * m.m[1][3] * m.m[3][0] +
 		m.m[0][3] * m.m[1][0] * m.m[3][1] -
-		m.m[0][3] * m.m[1][1] * m.m[2][0] -
+		m.m[0][3] * m.m[1][1] * m.m[3][0] -
 		m.m[0][1] * m.m[1][0] * m.m[3][3] -
 		m.m[0][0] * m.m[1][3] * m.m[3][1]) / A;
 	result.m[2][3] = (-m.m[0][0] * m.m[1][1] * m.m[2][3] -
@@ -187,12 +173,14 @@ Matrix4x4 MyMatrix4x4::Inverse(const Matrix4x4& m) {
 		m.m[0][2] * m.m[2][1] * m.m[3][0] -
 		m.m[0][1] * m.m[2][0] * m.m[3][2] -
 		m.m[0][0] * m.m[2][2] * m.m[3][1]) / A;
-	result.m[3][2] = (-m.m[0][0] * m.m[1][1] * m.m[3][2] - 
+
+	result.m[3][2] = (-m.m[0][0] * m.m[1][1] * m.m[3][2] -
 		m.m[0][1] * m.m[1][2] * m.m[3][0] -
 		m.m[0][2] * m.m[1][0] * m.m[3][1] +
 		m.m[0][2] * m.m[1][1] * m.m[3][0] +
 		m.m[0][1] * m.m[1][0] * m.m[3][2] +
 		m.m[0][0] * m.m[1][2] * m.m[3][1]) / A;
+
 	result.m[3][3] = (m.m[0][0] * m.m[1][1] * m.m[2][2] +
 		m.m[0][1] * m.m[1][2] * m.m[2][0] +
 		m.m[0][2] * m.m[1][0] * m.m[2][1] -
@@ -203,9 +191,10 @@ Matrix4x4 MyMatrix4x4::Inverse(const Matrix4x4& m) {
 	return result;
 }
 //	転置行列
-Matrix4x4 MyMatrix4x4::Transpose(const Matrix4x4& m) {
-	for (int y = 0; y < num; y++) {
-		for (int x = 0; x < num; x++) {
+MyMatrix4x4 Transpose(const MyMatrix4x4& m) {
+	MyMatrix4x4 result{};
+	for (int y = 0; y < result.m.size(); y++) {
+		for (int x = 0; x < result.m.size(); x++) {
 			result.m[y][x] = m.m[x][y];
 		}
 	}
@@ -213,29 +202,21 @@ Matrix4x4 MyMatrix4x4::Transpose(const Matrix4x4& m) {
 	return result;
 }
 //	単位行列の作成
-Matrix4x4 MyMatrix4x4::MakeIdentity4x4() {
-	for (int y = 0; y < 4; y++) {
-		for (int x = 0; x < 4; x++) {
-			if (y < 1 && x < 1) {
-				result.m[y][x] = 1.0f;
-			}
-			else if (y == x) {
-				result.m[y][x] = 1.0f;
-			}
-			else {
-				result.m[y][x] = 0.0f;
-			}
-		}
+MyMatrix4x4 MakeIdentity4x4() {
+	MyMatrix4x4 result{};
+	for (int y = 0; y < result.m.size(); y++) {
+		result.m[y][y] = 1.0f;
 	}
 
 	return result;
 }
 //	平行移動行列
-Matrix4x4 MyMatrix4x4::MakeTranslateMatrix(const Vector3& translate)
+MyMatrix4x4 MakeTranslateMatrix(const Vector3& translate)
 {
-	for (int y = 0; y < num; y++)
+	MyMatrix4x4 result{};
+	for (int y = 0; y < result.m.size(); y++)
 	{
-		for (int x = 0; x < num; x++)
+		for (int x = 0; x < result.m.size(); x++)
 		{
 			if (y == x)
 			{
@@ -254,9 +235,10 @@ Matrix4x4 MyMatrix4x4::MakeTranslateMatrix(const Vector3& translate)
 	return result;
 }
 //	拡大縮小行列
-Matrix4x4 MyMatrix4x4::MakeScaleMatrix(const Vector3& scale)
+MyMatrix4x4 MakeScaleMatrix(const Vector3& scale)
 {
-	Reset();
+	MyMatrix4x4 result{};
+	
 	result.m[0][0] = scale.x;
 	result.m[1][1] = scale.y;
 	result.m[2][2] = scale.z;
@@ -265,8 +247,9 @@ Matrix4x4 MyMatrix4x4::MakeScaleMatrix(const Vector3& scale)
 	return result;
 }
 //	座標変換
-Vector3 MyMatrix4x4::Transform(const Vector3& vector, const Matrix4x4& matrix)
+Vector3 Transform(const Vector3& vector, const MyMatrix4x4& matrix)
 {
+	Vector3 resultVec{0.0f,0.0f,0.0f};
 	resultVec.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] + 1.0f * matrix.m[3][0];
 	resultVec.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + vector.z * matrix.m[2][1] + 1.0f * matrix.m[3][1];
 	resultVec.z = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + vector.z * matrix.m[2][2] + 1.0f * matrix.m[3][2];
@@ -279,9 +262,9 @@ Vector3 MyMatrix4x4::Transform(const Vector3& vector, const Matrix4x4& matrix)
 	return resultVec;
 }
 
-Matrix4x4 MyMatrix4x4::MakeRotateXMatrix(float radian)
+MyMatrix4x4 MakeRotateXMatrix(float radian)
 {
-	Reset();
+	MyMatrix4x4 result{};
 	result.m[0][0] = 1.0f;
 	result.m[3][3] = 1.0f;
 
@@ -294,9 +277,9 @@ Matrix4x4 MyMatrix4x4::MakeRotateXMatrix(float radian)
 	return result;
 }
 
-Matrix4x4 MyMatrix4x4::MakeRotateYMatrix(float radian)
+MyMatrix4x4 MakeRotateYMatrix(float radian)
 {
-	Reset();
+	MyMatrix4x4 result{};
 	result.m[1][1] = 1.0f;
 	result.m[3][3] = 1.0f;
 
@@ -309,9 +292,9 @@ Matrix4x4 MyMatrix4x4::MakeRotateYMatrix(float radian)
 	return result;
 }
 
-Matrix4x4 MyMatrix4x4::MakeRotateZMatrix(float radian)
+MyMatrix4x4 MakeRotateZMatrix(float radian)
 {
-	Reset();
+	MyMatrix4x4 result{};
 	result.m[2][2] = 1.0f;
 	result.m[3][3] = 1.0f;
 
@@ -324,14 +307,14 @@ Matrix4x4 MyMatrix4x4::MakeRotateZMatrix(float radian)
 	return result;
 }
 
-Matrix4x4 MyMatrix4x4::MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate)
+MyMatrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate)
 {
-	Reset();
-	Matrix4x4 rotateMatrix;
-	rotateMatrix = Multiply(MakeRotateXMatrix(rotate.x), Multiply(MakeRotateYMatrix(rotate.y), MakeRotateZMatrix(rotate.z)));
+	MyMatrix4x4 result{};
+
+	MyMatrix4x4 rotateMatrix;
+	rotateMatrix = MakeRotateXMatrix(rotate.x) * MakeRotateYMatrix(rotate.y) * MakeRotateZMatrix(rotate.z);
 	result = rotateMatrix;
 
-	
 	for (int i = 0; i < 3; i++)
 	{
 		result.m[0][i] = scale.x * rotateMatrix.m[0][i];
@@ -343,4 +326,76 @@ Matrix4x4 MyMatrix4x4::MakeAffineMatrix(const Vector3& scale, const Vector3& rot
 	result.m[3][2] = translate.z;
 
 	return result;
+}
+
+MyMatrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip)
+{
+	MyMatrix4x4 result;
+	for (int y = 0; y < result.m.size(); y++)
+	{
+		for (int x = 0; x < result.m.size(); x++)
+		{
+			result.m[y][x] = 0.0f;
+		}
+	}
+	result.m[0][0] = (1.0f / aspectRatio) * (1.0f / tanf(fovY / 2.0f));
+	result.m[1][1] = 1.0f / tanf(fovY / 2.0f);
+	result.m[2][2] = farClip / (farClip - nearClip);
+	result.m[2][3] = 1.0f;
+	result.m[3][2] = (-nearClip * farClip) / (farClip - nearClip);
+
+	return result;
+}
+
+MyMatrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip)
+{
+	MyMatrix4x4 result;
+	for (int y = 0; y < result.m.size(); y++)
+	{
+		for (int x = 0; x < result.m.size(); x++)
+		{
+			result.m[y][x] = 0.0f;
+		}
+	}
+	result.m[0][0] = 2.0f / (right - left);
+	result.m[1][1] = 2.0f / (top - bottom);
+	result.m[2][2] = 1.0f / (farClip - nearClip);
+	result.m[3][3] = 1.0f;
+
+	result.m[3][0] = (left + right) / (left - right);
+	result.m[3][1] = (top + bottom) / (bottom - top);
+	result.m[3][2] = nearClip / (nearClip - farClip);
+
+	return result;
+}
+
+MyMatrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth)
+{
+	MyMatrix4x4 result;
+	for (int y = 0; y < result.m.size(); y++)
+	{
+		for (int x = 0; x < result.m.size(); x++)
+		{
+			result.m[y][x] = 0.0f;
+		}
+	}
+	result.m[0][0] = width / 2.0f;
+	result.m[1][1] = -height / 2.0f;
+	result.m[2][2] = maxDepth - minDepth;
+	result.m[3][3] = 1.0f;
+
+	result.m[3][0] = left + (width / 2.0f);
+	result.m[3][1] = top + (height / 2.0f);
+	result.m[3][2] = minDepth;
+
+	return result;
+}
+
+Vector3 Cross(const Vector3& v1, const Vector3& v2)
+{
+	Vector3 resultVec = { 0.0f,0.0f,0.0f };
+	resultVec.x = (v1.y * v2.z) - (v1.z * v2.y);
+	resultVec.y = (v1.z * v2.x) - (v1.x * v2.z);
+	resultVec.z = (v1.x * v2.y) - (v1.y * v2.x);
+	return resultVec;
 }

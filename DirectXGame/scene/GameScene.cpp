@@ -26,7 +26,6 @@ void GameScene::Initialize() {
 	enemyObsever = enemyModel;
 
 	//	skydomeモデルの生成
-	enemyTexture = TextureManager::Load("Player/enemy.png");
 	skydomeModel.reset(Model::CreateFromOBJ("skydome", true));
 	skydomeObsever = skydomeModel;
 
@@ -46,9 +45,12 @@ void GameScene::Initialize() {
 	//	敵キャラの初期化
 	enemy->Initialize(enemyModel, enemyTexture);
 	//	天球の初期化
-	enemy->Initialize(skydomeModel, skydomeTexture);
+	skydome->Initialize(skydomeModel, { 0.0f,0.0f,0.0f });
 	//	敵キャラに自キャラのアドレスを渡す
 	enemy->SetPlayer(player.get());
+
+	viewProjection.farZ = 2000.0f;
+	viewProjection.Initialize();
 
 	//	デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);

@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include <Model.h>
 #include <WorldTransform.h>
 #include <ViewProjection.h>
 #include "Vector3.h"
 
 /// <summary>
-/// “V‹…
+/// å¤©çƒ
 /// </summary>
 class Skydome
 {
@@ -14,30 +14,28 @@ public:
 	~Skydome();
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
-	/// <param name="model">ƒ‚ƒfƒ‹</param>
-	/// <param name="position">‰ŠúÀ•W</param>
-	/// <param name="velocity">‘¬“x</param>
-	void Initialize(std::shared_ptr<Model> model, const Vector3& position, const Vector3& velocity);
+	/// <param name="model">ãƒ¢ãƒ‡ãƒ«</param>
+	/// <param name="position">åˆæœŸåº§æ¨™</param>
+	/// <param name="velocity">é€Ÿåº¦</param>
+	void Initialize(std::shared_ptr<Model> model, const Vector3& position);
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
-	/// <param name="viewProjection">ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“</param>
+	/// <param name="viewProjection">ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³</param>
 	void Draw(const ViewProjection& viewProjection);
 
 private:
-	//	ƒ[ƒ‹ƒh•ÏŠ·ƒf[ƒ^
+	//	ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ãƒ‡ãƒ¼ã‚¿
 	WorldTransform worldTransform_;
-	//	ƒ‚ƒfƒ‹
+	//	ãƒ¢ãƒ‡ãƒ«
 	std::shared_ptr<Model> model_;
-
-
 
 };

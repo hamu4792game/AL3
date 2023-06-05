@@ -68,7 +68,7 @@ void Player::Update() {
 	}
 
 	//	アフィン変換
-	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(
+	worldTransform_.myMatWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	//	行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
@@ -110,7 +110,7 @@ void Player::Attack() {
 		Vector3 velocity(0, 0, kBulletSpeed);
 
 		//	速度ベクトルを自機の向きに合わせて回転させる
-		velocity = matrix.Transform(velocity, matrix.MakeRotateYMatrix(worldTransform_.rotation_.y));
+		velocity = Transform(velocity, MakeRotateYMatrix(worldTransform_.rotation_.y));
 
 		//	弾を登録する
 		bullets_.push_back(std::make_unique<PlayerBullet>());
@@ -120,6 +120,16 @@ void Player::Attack() {
 	}
 }
 
+
+Vector3 Player::GetWorldPosition() const
+{
+	Vector3 worldPos;
+	//	ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.myMatWorld_.m[3][0];
+	worldPos.y = worldTransform_.myMatWorld_.m[3][1];
+	worldPos.z = worldTransform_.myMatWorld_.m[3][2];
+	return worldPos;
+}
 
 void Player::OnCollision()
 {

@@ -27,9 +27,6 @@ private:
 	//	キーボード入力
 	Input* input_ = nullptr;
 
-	//	matrix
-	MyMatrix4x4 matrix;
-
 	//	ワールド変換データ
 	WorldTransform worldTransform_;
 	//	モデル
@@ -54,7 +51,7 @@ public:
 	/// ワールド座標を取得
 	/// </summary>
 	/// <returns>Vector3</returns>
-	Vector3 GetWorldPosition() const { return worldTransform_.translation_; }
+	Vector3 GetWorldPosition() const;
 
 	/// <summary>
 	/// 衝突を検出したら呼び出されるコールバック関数

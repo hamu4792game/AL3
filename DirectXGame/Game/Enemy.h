@@ -37,8 +37,6 @@ private:
 	std::shared_ptr<Model> model_;
 	//	テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
-	//	マトリックス
-	MyMatrix4x4 matrix;
 
 	//	行動フェーズ
 	enum class Phase

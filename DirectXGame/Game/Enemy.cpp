@@ -61,7 +61,7 @@ void Enemy::Update()
 	}
 
 	//	アフィン変換
-	worldTransform_.matWorld_ = matrix.MakeAffineMatrix(
+	worldTransform_.myMatWorld_ = MakeAffineMatrix(
 		worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	//	行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
@@ -124,9 +124,9 @@ Vector3 Enemy::GetWorldPosition()
 {
 	Vector3 worldPos;
 	//	ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = worldTransform_.translation_.x;
-	worldPos.y = worldTransform_.translation_.y;
-	worldPos.z = worldTransform_.translation_.z;
+	worldPos.x = worldTransform_.myMatWorld_.m[3][0];
+	worldPos.y = worldTransform_.myMatWorld_.m[3][1];
+	worldPos.z = worldTransform_.myMatWorld_.m[3][2];
 	return worldPos;
 }
 

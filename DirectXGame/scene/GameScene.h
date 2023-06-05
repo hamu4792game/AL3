@@ -57,7 +57,6 @@ private: // メンバ変数
 	//	テクスチャハンドル
 	uint32_t playerTexture = 0;
 	uint32_t enemyTexture = 0;
-	uint32_t skydomeTexture = 0;
 	//	3Dモデル
 	std::weak_ptr<Model> playerObsever;
 	std::shared_ptr<Model> playerModel;
