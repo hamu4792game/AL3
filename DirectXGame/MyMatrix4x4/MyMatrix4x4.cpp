@@ -17,6 +17,7 @@ MyMatrix4x4 MyMatrix4x4::operator+(const MyMatrix4x4& mat)
 			result.m[y][x] = this->m[y][x] + mat.m[y][x];
 		}
 	}
+
 	return result;
 }
 //	減算
@@ -51,7 +52,7 @@ MyMatrix4x4 MyMatrix4x4::operator*(const MyMatrix4x4& mat)
 
 MyMatrix4x4& MyMatrix4x4::operator=(const MyMatrix4x4& mat)
 {
-	m = mat.m;
+	this->m = mat.m;
 	return *this;
 }
 //	逆行列
@@ -192,7 +193,7 @@ MyMatrix4x4 Inverse(const MyMatrix4x4& m) {
 }
 //	転置行列
 MyMatrix4x4 Transpose(const MyMatrix4x4& m) {
-	MyMatrix4x4 result{};
+	MyMatrix4x4 result;
 	for (int y = 0; y < result.m.size(); y++) {
 		for (int x = 0; x < result.m.size(); x++) {
 			result.m[y][x] = m.m[x][y];
@@ -203,7 +204,7 @@ MyMatrix4x4 Transpose(const MyMatrix4x4& m) {
 }
 //	単位行列の作成
 MyMatrix4x4 MakeIdentity4x4() {
-	MyMatrix4x4 result{};
+	MyMatrix4x4 result;
 	for (int y = 0; y < result.m.size(); y++) {
 		result.m[y][y] = 1.0f;
 	}
@@ -213,20 +214,10 @@ MyMatrix4x4 MakeIdentity4x4() {
 //	平行移動行列
 MyMatrix4x4 MakeTranslateMatrix(const Vector3& translate)
 {
-	MyMatrix4x4 result{};
+	MyMatrix4x4 result;
 	for (int y = 0; y < result.m.size(); y++)
 	{
-		for (int x = 0; x < result.m.size(); x++)
-		{
-			if (y == x)
-			{
-				result.m[y][x] = 1.0f;
-			}
-			else
-			{
-				result.m[y][x] = 0.0f;
-			}
-		}
+		result.m[y][y] = 1.0f;
 	}
 	result.m[3][0] = translate.x;
 	result.m[3][1] = translate.y;
@@ -237,7 +228,7 @@ MyMatrix4x4 MakeTranslateMatrix(const Vector3& translate)
 //	拡大縮小行列
 MyMatrix4x4 MakeScaleMatrix(const Vector3& scale)
 {
-	MyMatrix4x4 result{};
+	MyMatrix4x4 result;
 	
 	result.m[0][0] = scale.x;
 	result.m[1][1] = scale.y;
@@ -331,13 +322,6 @@ MyMatrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const 
 MyMatrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip)
 {
 	MyMatrix4x4 result;
-	for (int y = 0; y < result.m.size(); y++)
-	{
-		for (int x = 0; x < result.m.size(); x++)
-		{
-			result.m[y][x] = 0.0f;
-		}
-	}
 	result.m[0][0] = (1.0f / aspectRatio) * (1.0f / tanf(fovY / 2.0f));
 	result.m[1][1] = 1.0f / tanf(fovY / 2.0f);
 	result.m[2][2] = farClip / (farClip - nearClip);
@@ -350,13 +334,6 @@ MyMatrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearCl
 MyMatrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip)
 {
 	MyMatrix4x4 result;
-	for (int y = 0; y < result.m.size(); y++)
-	{
-		for (int x = 0; x < result.m.size(); x++)
-		{
-			result.m[y][x] = 0.0f;
-		}
-	}
 	result.m[0][0] = 2.0f / (right - left);
 	result.m[1][1] = 2.0f / (top - bottom);
 	result.m[2][2] = 1.0f / (farClip - nearClip);
@@ -372,13 +349,6 @@ MyMatrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bot
 MyMatrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth)
 {
 	MyMatrix4x4 result;
-	for (int y = 0; y < result.m.size(); y++)
-	{
-		for (int x = 0; x < result.m.size(); x++)
-		{
-			result.m[y][x] = 0.0f;
-		}
-	}
 	result.m[0][0] = width / 2.0f;
 	result.m[1][1] = -height / 2.0f;
 	result.m[2][2] = maxDepth - minDepth;
