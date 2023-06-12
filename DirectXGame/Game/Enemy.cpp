@@ -46,7 +46,7 @@ void Enemy::Update()
 	(this->*pPhaseTable[static_cast<size_t>(phase_)])();
 
 	//	座標移動
-	worldTransform_.translation_ += move;
+	/*worldTransform_.translation_ += move;*/
 
 	//	時間の加算
 	timer--;

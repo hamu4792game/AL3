@@ -91,6 +91,6 @@ public:
 	/// 弾リストを取得
 	/// </summary>
 	/// <returns>bullet->List</returns>
-	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; };
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; };
 };
 

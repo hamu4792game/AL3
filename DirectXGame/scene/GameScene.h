@@ -13,6 +13,7 @@
 #include "Game/Player.h"
 #include "Game/Enemy.h"
 #include "Game/skydome.h"
+#include "RailCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -66,12 +67,15 @@ private: // メンバ変数
 	std::shared_ptr<Model> skydomeModel;
 	//	ビュープロジェクション
 	ViewProjection viewProjection;
+
 	//	自キャラ
 	std::unique_ptr<Player> player;
 	//	敵キャラ
 	std::unique_ptr<Enemy> enemy;
 	//	天球
 	std::unique_ptr<Skydome> skydome;
+	//	レールカメラ
+	std::unique_ptr<RailCamera> railCamera;
 	//	デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	//	デバッグカメラ

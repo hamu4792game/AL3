@@ -15,7 +15,7 @@ public:
 	//	デストラクタ
 	~Player();
 	//	初期化
-	void Initialize(std::shared_ptr<Model> model, uint32_t textureHandle);
+	void Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Vector3 pos);
 	
 	//	更新
 	void Update();
@@ -62,6 +62,12 @@ public:
 	/// 弾リストを取得
 	/// </summary>
 	/// <returns>bullet->List</returns>
-	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; };
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() const { return bullets_; };
+
+	/// <summary>
+	/// 親子関係を結ぶ
+	/// </summary>
+	/// <param name="parent">親となるワールドトランスフォーム</param>
+	void SetParent(const WorldTransform* parent);
 
 };

@@ -10,7 +10,7 @@ Player::~Player() {
 
 }
 
-void Player::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle) {
+void Player::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Vector3 pos) {
 	//	NULLポインタチェック
 	assert(model);
 	//	シングルトンインスタンスを取得する
@@ -21,6 +21,7 @@ void Player::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle) {
 	this->textureHandle_ = textureHandle;
 	//	ワールド変換の初期化
 	this->worldTransform_.Initialize();
+	this->worldTransform_.translation_ = pos;
 }
 
 void Player::Update() { 
@@ -67,11 +68,8 @@ void Player::Update() {
 		(*i)->Update();
 	}
 
-	//	アフィン変換
-	worldTransform_.myMatWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-	//	行列を定数バッファに転送
-	worldTransform_.TransferMatrix();
+	//	行列更新
+	worldTransform_.UpdateMatrix();
 
 	//	キャラクターの座標を画面表示する処理
 	ImGui::Begin("Player");
@@ -110,13 +108,13 @@ void Player::Attack() {
 		Vector3 velocity(0, 0, kBulletSpeed);
 
 		//	速度ベクトルを自機の向きに合わせて回転させる
-		velocity = Transform(velocity, MakeRotateYMatrix(worldTransform_.rotation_.y));
+		velocity = Transform(velocity, MakeRotateYMatrix(worldTransform_.parent_->rotation_.y));
 
 		//	弾を登録する
 		bullets_.push_back(std::make_unique<PlayerBullet>());
 		//	今追加したものの初期化処理
 		//	rbegin() 逆イテレーター
-		(*bullets_.rbegin())->Initialize(model_, worldTransform_.translation_, velocity);
+		(*bullets_.rbegin())->Initialize(model_, GetWorldPosition(), velocity);
 	}
 }
 
@@ -134,4 +132,9 @@ Vector3 Player::GetWorldPosition() const
 void Player::OnCollision()
 {
 
+}
+
+void Player::SetParent(const WorldTransform* parent)
+{
+	worldTransform_.parent_ = parent;
 }

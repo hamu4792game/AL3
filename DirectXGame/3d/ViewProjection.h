@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Matrix4x4.h"
+#include "MyMatrix4x4/MyMatrix4x4.h"
 #include "Vector3.h"
 #include <d3d12.h>
 #include <wrl.h>
 
 // 定数バッファ用データ構造体
 struct ConstBufferDataViewProjection {
-	Matrix4x4 view;       // ワールド → ビュー変換行列
-	Matrix4x4 projection; // ビュー → プロジェクション変換行列
+	MyMatrix4x4 view;       // ワールド → ビュー変換行列
+	MyMatrix4x4 projection; // ビュー → プロジェクション変換行列
 	Vector3 cameraPos;    // カメラ座標（ワールド座標）
 };
 
@@ -40,9 +40,9 @@ struct ViewProjection {
 #pragma endregion
 
 	// ビュー行列
-	Matrix4x4 matView;
+	MyMatrix4x4 myMatView;
 	// 射影行列
-	Matrix4x4 matProjection;
+	MyMatrix4x4 myMatProjection;
 
 	/// <summary>
 	/// 初期化

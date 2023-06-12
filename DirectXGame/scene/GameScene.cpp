@@ -29,28 +29,31 @@ void GameScene::Initialize() {
 	skydomeModel.reset(Model::CreateFromOBJ("skydome", true));
 	skydomeObsever = skydomeModel;
 
-
 	viewProjection.Initialize();
-
 	//	自キャラの生成
 	player = std::make_unique<Player>();
 	//	敵キャラの生成
 	enemy = std::make_unique<Enemy>();
 	//	天球の生成
 	skydome = std::make_unique<Skydome>();
+	//	レールカメラの生成
+	railCamera = std::make_unique<RailCamera>();
 
+	//	自キャラとレールカメラの親子関係を結ぶ
+	player->SetParent(&railCamera->GetWorldTransform());
 
 	//	自キャラの初期化
-	player->Initialize(playerModel, playerTexture);
+	Vector3 playerPos{ 0.0f,0.0f,20.0f };
+	player->Initialize(playerModel, playerTexture, playerPos);
 	//	敵キャラの初期化
 	enemy->Initialize(enemyModel, enemyTexture);
 	//	天球の初期化
 	skydome->Initialize(skydomeModel, { 0.0f,0.0f,0.0f });
+	//	レールカメラの初期化
+	railCamera->Initialize(viewProjection);
 	//	敵キャラに自キャラのアドレスを渡す
 	enemy->SetPlayer(player.get());
 
-	viewProjection.farZ = 2000.0f;
-	viewProjection.Initialize();
 
 	//	デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -67,7 +70,9 @@ void GameScene::Update() {
 	enemy->Update();
 	//	天球の更新
 	skydome->Update();
-
+	//	レールカメラの更新
+	railCamera->Updata();
+	
 	if (input_->PushKey(DIK_R))
 	{
 		enemy->Reset();
@@ -82,13 +87,18 @@ void GameScene::Update() {
 	if (isDebugCameraActive_) {
 		//	デバッグカメラの更新
 		debugCamera_->Update();
-		viewProjection.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection.matProjection = debugCamera_->GetViewProjection().matProjection;
+		viewProjection.myMatView = debugCamera_->GetViewProjection().myMatView;
+		viewProjection.myMatProjection = debugCamera_->GetViewProjection().myMatProjection;
 		//	ビュープロジェクション行列の転送
 		viewProjection.TransferMatrix();
 	} else {
-		//	ビュープロジェクション行列の更新と転送
-		viewProjection.UpdateMatrix();
+
+		viewProjection.myMatView = railCamera->GetViewProjection().myMatView;
+		viewProjection.myMatProjection = railCamera->GetViewProjection().myMatProjection;
+
+		//	ビュープロジェクション行列の転送
+		viewProjection.TransferMatrix();
+
 	}
 #endif
 
