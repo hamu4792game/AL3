@@ -12,7 +12,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle)
+void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Vector3 position)
 {
 	//	NULLポインタチェック
 	assert(model);
@@ -23,7 +23,7 @@ void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle)
 	//	ワールド変換の初期化
 	this->worldTransform_.Initialize();
 	//	初期座標の設定
-	this->worldTransform_.translation_ = { 10.0f,0.0f,50.0f };
+	this->worldTransform_.translation_ = position;
 
 }
 
@@ -36,10 +36,10 @@ void (Enemy::* Enemy::pPhaseTable[])() = {
 
 void Enemy::Update()
 {
-	//	デスフラグの立った弾を削除
-	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
-		return bullet->IsDead();
-		});
+	////	デスフラグの立った弾を削除
+	//bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
+	//	return bullet->IsDead();
+	//	});
 
 
 	//	現在フェーズの関数を実行
@@ -52,12 +52,12 @@ void Enemy::Update()
 	timer--;
 	//	キャラクター攻撃処理
 	if (timer <= 0) {
+		coolDawn = false;
 		Fire();
 		timer = 20;
 	}
-	//	弾更新
-	for (auto i = bullets_.begin(); i != bullets_.end(); i++) {
-		(*i)->Update();
+	else {
+		coolDawn = true;
 	}
 
 	//	アフィン変換
@@ -77,10 +77,10 @@ void Enemy::Update()
 void Enemy::Draw(ViewProjection& viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	//	弾更新
-	for (auto i = bullets_.begin(); i != bullets_.end(); i++) {
-		(*i)->Draw(viewProjection);
-	}
+	////	弾更新
+	//for (auto i = bullets_.begin(); i != bullets_.end(); i++) {
+	//	(*i)->Draw(viewProjection);
+	//}
 }
 
 void Enemy::Reset()
@@ -104,7 +104,7 @@ void Enemy::Fire()
 	assert(player_);
 	//	弾の速度
 	const float kBulletSpeed = 2.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
+	velocity = { 0, 0, kBulletSpeed };
 
 	Vector3 playerPos = player_->GetWorldPosition();
 	Vector3 enemyPos = worldTransform_.translation_;
@@ -113,10 +113,10 @@ void Enemy::Fire()
 	velocity = differencialVector * kBulletSpeed;
 
 	//	弾を登録する
-	bullets_.push_back(std::make_unique<EnemyBullet>());
+	//bullets_.push_back(std::make_unique<EnemyBullet>());
 	//	今追加したものの初期化処理
 	//	rbegin() 逆イテレーター
-	(*bullets_.rbegin())->Initialize(model_, worldTransform_.translation_, velocity);
+	//(*bullets_.rbegin())->Initialize(model_, worldTransform_.translation_, velocity);
 	
 }
 

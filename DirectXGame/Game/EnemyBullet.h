@@ -23,6 +23,7 @@ public:
 	/// <param name="position">初期座標</param>
 	/// <param name="velocity">速度</param>
 	void Initialize(std::shared_ptr<Model> model, const Vector3& position, const Vector3& velocity);
+	void Initialize(const Vector3& position, const Vector3& velocity);
 
 	/// <summary>
 	/// 更新
@@ -46,7 +47,7 @@ private:
 	//	速度
 	Vector3 velocity_;
 	//	寿命<frm>
-	static const int32_t kLifeTime = 60 * 5;
+	static const int32_t kLifeTime = 60 * 2;
 	//	デスタイマー
 	int32_t deathTimer_ = kLifeTime;
 	//	デスフラグ

@@ -21,6 +21,16 @@ void EnemyBullet::Initialize(std::shared_ptr<Model> model, const Vector3& positi
 
 }
 
+void EnemyBullet::Initialize(const Vector3& position, const Vector3& velocity)
+{
+	//	ワールド変換の初期化
+	worldTransform_.Initialize();
+	//	引数で受け取った初期座標をリセット
+	worldTransform_.translation_ = position;
+	//	velocityのset
+	velocity_ = velocity;
+}
+
 void EnemyBullet::Update()
 {
 	//	座標を更新

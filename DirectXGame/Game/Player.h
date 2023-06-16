@@ -7,6 +7,7 @@
 #include "MyMatrix4x4/MyMatrix4x4.h"
 #include "Game/PlayerBullet.h"
 #include <list>
+#include <Sprite.h>
 
 class Player {
 public:
@@ -18,10 +19,12 @@ public:
 	void Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Vector3 pos);
 	
 	//	更新
-	void Update();
+	void Update(ViewProjection& viewProjection);
 
 	//	描画
 	void Draw(ViewProjection& viewProjection);
+
+	void DrawUI();
 
 private:
 	//	キーボード入力
@@ -36,6 +39,12 @@ private:
 
 	//	弾
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
+
+	//	3Dレティクル用ワールドトランスフォーム
+	WorldTransform worldTransform3DReticle_;
+
+	//	2Dレティクル用スプライト
+	std::shared_ptr<Sprite> sprite2DRetecle_ = nullptr;
 
 private:
 	//	自機の回転
@@ -52,6 +61,8 @@ public:
 	/// </summary>
 	/// <returns>Vector3</returns>
 	Vector3 GetWorldPosition() const;
+
+	Vector3 GetReticleWorldPosition() const;
 
 	/// <summary>
 	/// 衝突を検出したら呼び出されるコールバック関数

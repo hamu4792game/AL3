@@ -11,6 +11,7 @@
 
 //	クラスの前方宣言
 class Player;
+class GameScene;
 
 class Enemy
 {
@@ -20,7 +21,7 @@ public:
 
 public:
 	//	初期化
-	void Initialize(std::shared_ptr<Model> model, uint32_t textureHandle);
+	void Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Vector3 position);
 
 	//	更新
 	void Update();
@@ -46,14 +47,17 @@ private:
 	};
 	Phase phase_ = Phase::Apprpach;
 
-	//	弾
-	std::list<std::unique_ptr<EnemyBullet>> bullets_;
+	////	弾
+	//std::list<std::unique_ptr<EnemyBullet>> bullets_;
+	
 	//	発射速度
 	static const int32_t kFireInterval = 60;
 	int32_t timer = 0;
 
 	//	自キャラ
 	Player* player_ = nullptr;
+	//	ゲームシーン
+	GameScene* gameScene_ = nullptr;
 public:
 	//	アドレスのセッター
 	void SetPlayer(Player* player) { player_ = player; };
@@ -68,6 +72,10 @@ private:
 
 	//	移動量
 	Vector3 move;
+
+	Vector3 velocity;
+
+	bool coolDawn;
 
 public:
 	/// <summary>
@@ -91,6 +99,15 @@ public:
 	/// 弾リストを取得
 	/// </summary>
 	/// <returns>bullet->List</returns>
-	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; };
+	//const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; };
+	//const std::unique_ptr<EnemyBullet>& GetBullet() const { return bullet_; };
+
+	const Vector3& GetVelocity() const { return velocity; };
+	const Vector3& GetTranslation() const { return worldTransform_.translation_; };
+	const bool& GetCoolDawn() const { return coolDawn; };
+
+	void SetGameScene(GameScene* gameScene) { this->gameScene_ = gameScene; };
+
+
 };
 

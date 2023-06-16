@@ -28,7 +28,8 @@ void RailCamera::Initialize(ViewProjection viewProjection)
 
 void RailCamera::Updata()
 {
-	worldTransform_.rotation_.y -= 0.005f;
+	//	カメラの移動
+	//worldTransform_.rotation_.y -= 0.005f;
 
 	//	アフィン変換
 	worldTransform_.myMatWorld_ = MakeAffineMatrix(

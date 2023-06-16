@@ -35,6 +35,8 @@ MyMatrix4x4 MakeTranslateMatrix(const Vector3& translate);
 MyMatrix4x4 MakeScaleMatrix(const Vector3& scale);
 //	座標変換
 Vector3 Transform(const Vector3& vector, const MyMatrix4x4& matrix);
+//	平行移動を加味しない座標変換
+Vector3 TransformNormal(const Vector3& vector, const MyMatrix4x4& matrix);
 //	X軸回転行列
 MyMatrix4x4 MakeRotateXMatrix(float radian);
 //	Y軸回転行列

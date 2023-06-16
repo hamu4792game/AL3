@@ -13,7 +13,7 @@ void Skydome::Initialize(std::shared_ptr<Model> model, const Vector3& position)
 	this->model_ = model;
 	this->worldTransform_.Initialize();
 	this->worldTransform_.translation_ = position;
-	this->worldTransform_.scale_ = { 100.0f,100.0f,100.0f };
+	this->worldTransform_.scale_ = { 500.0f,500.0f,500.0f };
 }
 
 void Skydome::Update()
