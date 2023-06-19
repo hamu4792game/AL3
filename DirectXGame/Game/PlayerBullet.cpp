@@ -46,3 +46,13 @@ void PlayerBullet::OnCollision()
 {
 	isDead_ = true;
 }
+
+Vector3 PlayerBullet::GetWorldPosition() const
+{
+	Vector3 worldPos;
+	//	ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.myMatWorld_.m[3][0];
+	worldPos.y = worldTransform_.myMatWorld_.m[3][1];
+	worldPos.z = worldTransform_.myMatWorld_.m[3][2];
+	return worldPos;
+}

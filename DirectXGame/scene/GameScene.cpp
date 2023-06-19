@@ -88,12 +88,15 @@ void GameScene::Update() {
 		{
 			return bullet->IsDead();
 		})
-		)
+		) {
+	};
 
 	/*if (input_->PushKey(DIK_R))
 	{
 		enemy->Reset();
 	}*/
+
+	//	衝突判定
 	CheckAllCollisions();
 
 	

@@ -62,6 +62,6 @@ public:
 
 	//
 	bool IsDead() const { return isDead_; }
-	Vector3 GetWorldPosition() const { return worldTransform_.translation_; }
+	Vector3 GetWorldPosition() const;
 
 };

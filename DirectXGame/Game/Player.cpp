@@ -25,7 +25,7 @@ void Player::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Ve
 	//	3Dレティクルのワールドトランスフォームの初期化
 	worldTransform3DReticle_.Initialize();
 	//	レティクル用テクスチャの取得
-	uint32_t textureReticle = TextureManager::Load("tex1.png");
+	uint32_t textureReticle = TextureManager::Load("scope2.png");
 	//	スプライト生成
 	sprite2DRetecle_.reset(Sprite::Create(textureReticle, { 640.0f,360.0f }, { 1.0f,1.0f,0.0f,1.0f }, { 0.5f,0.5f }));
 
@@ -121,8 +121,7 @@ void Player::Draw(ViewProjection& viewProjection) {
 	for (auto i = bullets_.begin(); i != bullets_.end(); i++) {
 		(*i)->Draw(viewProjection);
 	}
-	model_->Draw(worldTransform3DReticle_, viewProjection, textureHandle_);
-
+	//model_->Draw(worldTransform3DReticle_, viewProjection, textureHandle_);
 }
 
 void Player::DrawUI()
