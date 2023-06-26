@@ -72,11 +72,18 @@ void GameScene::Update() {
 	for (auto i = enemys_.begin(); i != enemys_.end(); i++) {
 		(*i)->Update();
 		//	ゲームシーンに敵弾を代入
-		if (!(*i)->GetCoolDawn())
+		if (!(*i)->GetCoolDown())
 		{
 			AddEnemyBullet((*i));
 		}
 	}
+	//	デスフラグの立った弾を削除
+	if (enemys_.remove_if([](const std::unique_ptr<Enemy>& ene)
+		{
+			return ene->IsDead();
+		})
+		) {
+	};
 	
 	//	敵の弾の更新
 	for (auto i = enemyBullets_.begin(); i != enemyBullets_.end(); i++)
@@ -90,11 +97,6 @@ void GameScene::Update() {
 		})
 		) {
 	};
-
-	/*if (input_->PushKey(DIK_R))
-	{
-		enemy->Reset();
-	}*/
 
 	//	衝突判定
 	CheckAllCollisions();

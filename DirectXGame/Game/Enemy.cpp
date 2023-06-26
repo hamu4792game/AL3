@@ -46,19 +46,7 @@ void Enemy::Update()
 	(this->*pPhaseTable[static_cast<size_t>(phase_)])();
 
 	//	座標移動
-	/*worldTransform_.translation_ += move;*/
-
-	//	時間の加算
-	timer--;
-	//	キャラクター攻撃処理
-	if (timer <= 0) {
-		coolDawn = false;
-		Fire();
-		timer = 20;
-	}
-	else {
-		coolDawn = true;
-	}
+	worldTransform_.translation_ += move;
 
 	//	アフィン変換
 	worldTransform_.myMatWorld_ = MakeAffineMatrix(
@@ -91,12 +79,29 @@ void Enemy::Reset()
 
 void Enemy::Move1()
 {
-	move = { 0.0f,0.0f,-0.5f };
+	move = { 0.0f,0.0f,0.0f };
+
+	//	時間の加算
+	timer--;
+	//	キャラクター攻撃処理
+	if (timer <= 0) {
+		coolDown = false;
+		Fire();
+		timer = 20;
+	}
+	else {
+		coolDown = true;
+	}
 }
 
 void Enemy::Move2()
 {
-	move = { -0.5f,0.2f,0.0f };
+	move = { 0.0f,-0.5f,0.0f };
+	timer--;
+	if (timer <= 0)
+	{
+		isDead_ = true;
+	}
 }
 
 void Enemy::Fire()
@@ -132,5 +137,6 @@ Vector3 Enemy::GetWorldPosition()
 
 void Enemy::OnCollision()
 {
-
+	phase_ = Phase::Leave;
+	timer = 60;
 }

@@ -46,6 +46,9 @@ private:
 	//	2Dレティクル用スプライト
 	std::shared_ptr<Sprite> sprite2DRetecle_ = nullptr;
 
+	//	ゲームパッドの状態を得る変数
+	XINPUT_STATE joyState;
+
 private:
 	//	自機の回転
 	void Rotate();
@@ -54,6 +57,11 @@ private:
 	/// 攻撃
 	/// </summary>
 	void Attack();
+
+	/// <summary>
+	/// マウスカーソルのスクリーン座標からワールド座標を取得して3Dレティクル配置
+	/// </summary>
+	void Scope(ViewProjection& viewProjection);
 
 public:
 	/// <summary>

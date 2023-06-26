@@ -75,7 +75,9 @@ private:
 
 	Vector3 velocity;
 
-	bool coolDawn;
+	bool coolDown;
+
+	bool isDead_ = false;
 
 public:
 	/// <summary>
@@ -104,7 +106,8 @@ public:
 
 	const Vector3& GetVelocity() const { return velocity; };
 	const Vector3& GetTranslation() const { return worldTransform_.translation_; };
-	const bool& GetCoolDawn() const { return coolDawn; };
+	const bool& GetCoolDown() const { return coolDown; };
+	const bool& IsDead() const { return isDead_; }
 
 	void SetGameScene(GameScene* gameScene) { this->gameScene_ = gameScene; };
 
