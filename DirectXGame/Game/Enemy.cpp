@@ -87,7 +87,7 @@ void Enemy::Move1()
 	if (timer <= 0) {
 		coolDown = false;
 		Fire();
-		timer = 20;
+		timer = 60;
 	}
 	else {
 		coolDown = true;

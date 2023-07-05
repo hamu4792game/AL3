@@ -49,22 +49,20 @@ void Player::Update(ViewProjection& viewProjection) {
 		move.x += static_cast<float>(joyState.Gamepad.sThumbLX / SHRT_MAX * kCharacterSpeed);
 		move.y += static_cast<float>(joyState.Gamepad.sThumbLY / SHRT_MAX * kCharacterSpeed);
 	}
-	else {
-		//	押した方向で移動ベクトルを変更（左右）
-		if (input_->PushKey(DIK_A)) {
-			move.x -= kCharacterSpeed;
-		}
-		else if (input_->PushKey(DIK_D)) {
-			move.x += kCharacterSpeed;
-		};
-		//	上下
-		if (input_->PushKey(DIK_W)) {
-			move.y += kCharacterSpeed;
-		}
-		else if (input_->PushKey(DIK_S)) {
-			move.y -= kCharacterSpeed;
-		};
+	//	押した方向で移動ベクトルを変更（左右）
+	if (input_->PushKey(DIK_A)) {
+		move.x -= kCharacterSpeed;
 	}
+	else if (input_->PushKey(DIK_D)) {
+		move.x += kCharacterSpeed;
+	};
+	//	上下
+	if (input_->PushKey(DIK_W)) {
+		move.y += kCharacterSpeed;
+	}
+	else if (input_->PushKey(DIK_S)) {
+		move.y -= kCharacterSpeed;
+	};
 
 	//	回転
 	Rotate();
@@ -72,8 +70,8 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform_.translation_ += move;
 
 	//	移動限界座標
-	const float kMoveLimitX = 34.0f;
-	const float kMoveLimitY = 18.0f;
+	const float kMoveLimitX = 14.0f;
+	const float kMoveLimitY = 8.0f;
 	//	範囲を超えない処理
 	worldTransform_.translation_.x =
 	    std::clamp(worldTransform_.translation_.x, -kMoveLimitX, kMoveLimitX);
@@ -99,6 +97,7 @@ void Player::Update(ViewProjection& viewProjection) {
 	ImGui::Text(
 	    "player : %0.2f,%0.2f,%0.2f", worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z);
+	
 	ImGui::End();
 
 }
@@ -132,7 +131,8 @@ void Player::Rotate() {
 }
 
 void Player::Attack() {
-	if (input_->TriggerKey(DIK_SPACE) || input_->IsPressMouse(0) || (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+	timer--;
+	if ((input_->PushKey(DIK_SPACE) || input_->IsPressMouse(0) || (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) && timer <= 0) {
 		//	弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
@@ -148,13 +148,15 @@ void Player::Attack() {
 		//	今追加したものの初期化処理
 		//	rbegin() 逆イテレーター
 		(*bullets_.rbegin())->Initialize(model_, GetWorldPosition(), velocity);
+		timer = 10;
 	}
 }
 
 void Player::Scope(ViewProjection& viewProjection)
 {
 #pragma region マウスカーソルのスクリーン座標からワールド座標を取得して3Dレティクル配置
-	POINT mousePosition;
+	
+	POINT mousePosition{};
 	//	マウス座標を取得する
 	GetCursorPos(&mousePosition);
 	//	クライアントエリア座標に取得する
@@ -181,7 +183,6 @@ void Player::Scope(ViewProjection& viewProjection)
 	//	カメラから照準オブジェクトの距離
 	const float kDistanceTestObject = 100.0f;
 	worldTransform3DReticle_.translation_ = posNear + (mouseDirection * kDistanceTestObject);
-
 		//	3Dレティクルの行列更新
 	worldTransform3DReticle_.UpdateMatrix();
 

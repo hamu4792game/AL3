@@ -47,7 +47,9 @@ private:
 	std::shared_ptr<Sprite> sprite2DRetecle_ = nullptr;
 
 	//	ゲームパッドの状態を得る変数
-	XINPUT_STATE joyState;
+	XINPUT_STATE joyState{};
+
+	int32_t timer = 0;
 
 private:
 	//	自機の回転
