@@ -13,7 +13,7 @@ public:
 	//	デストラクタ
 	~Player();
 	//	初期化
-	void Initialize(std::array < std::shared_ptr < Model>, 4> model, uint32_t textureHandle, Vector3 pos);
+	void Initialize(std::array < std::shared_ptr < Model>, 4> model, Vector3 pos);
 	
 	//	更新
 	void Update();
@@ -30,8 +30,8 @@ private:
 	WorldTransform worldTransform_;
 	//	モデル
 	std::array < std::shared_ptr < Model>, 4> model_;
-	//	テクスチャハンドル
-	uint32_t textureHandle_ = 0u;
+	//	個々のパーツ	head,body,RArm,LArm
+	std::array<WorldTransform, 4> parts;
 
 	//	ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState{};

@@ -15,8 +15,6 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	//	playerモデルの生成
-	playerTexture = TextureManager::Load("Player/player.png");
-
 	playerModels[0].reset(Model::CreateFromOBJ("head", true));
 	playerModels[1].reset(Model::CreateFromOBJ("body", true));
 	playerModels[2].reset(Model::CreateFromOBJ("RArm", true));
@@ -33,7 +31,7 @@ void GameScene::Initialize() {
 	player = std::make_unique<Player>();
 	//	自キャラの初期化
 	Vector3 playerPos{ 0.0f,1.4f,0.0f };
-	player->Initialize(playerModels, playerTexture, playerPos);
+	player->Initialize(playerModels, playerPos);
 
 	//	天球の生成と初期化
 	skydome = std::make_unique<Skydome>();
@@ -63,18 +61,19 @@ void GameScene::Update() {
 	
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_5)) {
-		isDebugCameraActive_ = true;
+		isDebugCameraActive_ = !isDebugCameraActive_;
 	}
 	//	カメラの処理
 	if (isDebugCameraActive_) {
+		//	デバッグカメラの更新
+		debugCamera_->Update();
+		viewProjection.myMatView = debugCamera_->GetViewProjection().myMatView;
+		viewProjection.myMatProjection = debugCamera_->GetViewProjection().myMatProjection;
 		
 	}
-	//	デバッグカメラの更新
-	debugCamera_->Update();
-	viewProjection.myMatView = debugCamera_->GetViewProjection().myMatView;
-	viewProjection.myMatProjection = debugCamera_->GetViewProjection().myMatProjection;
 	//	ビュープロジェクション行列の転送
 	viewProjection.TransferMatrix();
+	
 #endif
 
 }

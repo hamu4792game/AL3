@@ -56,9 +56,7 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	//	テクスチャハンドル
-	uint32_t playerTexture = 0;
-	uint32_t enemyTexture = 0;
+	 
 	//	3Dモデル
 	std::shared_ptr<Model> skydomeModel;
 	std::shared_ptr<Model> groundModel;

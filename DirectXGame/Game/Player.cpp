@@ -10,7 +10,7 @@ Player::~Player() {
 
 }
 
-void Player::Initialize(std::array < std::shared_ptr < Model>, 4> model, uint32_t textureHandle, Vector3 pos) {
+void Player::Initialize(std::array < std::shared_ptr < Model>, 4> model, Vector3 pos) {
 	//	NULLポインタチェック
 	for (auto& i : model)
 	{
@@ -21,14 +21,25 @@ void Player::Initialize(std::array < std::shared_ptr < Model>, 4> model, uint32_
 	
 	//	受け取ったデータをメンバ変数に記録する
 	this->model_ = model;
-	this->textureHandle_ = textureHandle;
 	//	ワールド変換の初期化
 	this->worldTransform_.Initialize();
 	this->worldTransform_.translation_ = pos;
 
+	for (auto& i : parts)
+	{
+		i.Initialize();
+		i.parent_ = &worldTransform_;
+	}
+	//	パーツ毎の設定
+	parts[0].translation_ = Vector3{ 0.0f,1.5f,0.0f };
+	parts[1].translation_ = Vector3{ 0.0f,0.0f,0.0f };
+	parts[2].translation_ = Vector3{ -0.2f,1.7f,0.0f };
+	parts[3].translation_ = Vector3{ 0.2f,1.7f,0.0f };
+
 }
 
 void Player::Update() {
+	
 	
 	//	キャラクターの移動ベクトル
 	Vector3 move = {0.0f, 0.0f, 0.0f};
@@ -68,14 +79,22 @@ void Player::Update() {
 	worldTransform_.translation_.y =
 	    std::clamp(worldTransform_.translation_.y, -kMoveLimitY, kMoveLimitY);
 
+
 	//	行列更新
 	worldTransform_.UpdateMatrix();
+	//	partsに親座標の足して更新
+	for (auto& i : parts)
+	{
+		i.UpdateMatrix();
+	}
 
 	//	キャラクターの座標を画面表示する処理
 	ImGui::Begin("Player");
 	ImGui::Text(
 	    "player : %0.2f,%0.2f,%0.2f", worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z);
+	//ImGui::DragFloat3("te", &parts[2].translation_.x, 0.1f);
+	//ImGui::DragFloat3("tu", &parts[2].rotation_.x, 0.1f);
 	
 	ImGui::End();
 
@@ -83,7 +102,8 @@ void Player::Update() {
 
 void Player::Draw(ViewProjection& viewProjection) {
 
-	for (auto& i : model_) {
-		i->Draw(worldTransform_, viewProjection, textureHandle_);
+	for (uint16_t i = 0u; i < 4u; i++)
+	{
+		model_[i]->Draw(parts[i], viewProjection);
 	}
 }
