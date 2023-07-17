@@ -58,23 +58,8 @@
     <Filter Include="MyMatrix4x4">
       <UniqueIdentifier>{1ba862d1-55d5-4921-b6b1-14c0bd87ba94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayerBullet">
-      <UniqueIdentifier>{227504e0-8b3d-41fe-b799-22044198aa5b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\3d">
       <UniqueIdentifier>{2d86a1fc-4a9d-4c8d-aed3-9e2eda3d0c79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{a7e9b4d1-c002-4d46-9958-0f800acd6c94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EnemyBullet">
-      <UniqueIdentifier>{6effe404-6088-4433-8845-0e0d80ce9161}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="skydome">
-      <UniqueIdentifier>{43a4a65d-1b74-40fd-920a-62e2c7b9b6af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RailCamera">
-      <UniqueIdentifier>{55657051-9e86-467f-96f6-74b09d6b44f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,23 +87,8 @@
     <ClCompile Include="math\Vector3.cpp">
       <Filter>ソース ファイル\math</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Enemy.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Player.cpp">
       <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\PlayerBullet.cpp">
-      <Filter>PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\EnemyBullet.cpp">
-      <Filter>EnemyBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\skydome.cpp">
-      <Filter>skydome</Filter>
-    </ClCompile>
-    <ClCompile Include="RailCamera.cpp">
-      <Filter>RailCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,23 +179,8 @@
     <ClInclude Include="MyMatrix4x4\MyMatrix4x4.h">
       <Filter>MyMatrix4x4</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Enemy.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Player.h">
       <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\PlayerBullet.h">
-      <Filter>PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\EnemyBullet.h">
-      <Filter>EnemyBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\skydome.h">
-      <Filter>skydome</Filter>
-    </ClInclude>
-    <ClInclude Include="RailCamera.h">
-      <Filter>RailCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
