@@ -10,9 +10,12 @@ Player::~Player() {
 
 }
 
-void Player::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Vector3 pos) {
+void Player::Initialize(std::array < std::shared_ptr < Model>, 4> model, uint32_t textureHandle, Vector3 pos) {
 	//	NULLポインタチェック
-	assert(model);
+	for (auto& i : model)
+	{
+		assert(i);
+	}
 	//	シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	
@@ -25,9 +28,8 @@ void Player::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Ve
 
 }
 
-void Player::Update(ViewProjection& viewProjection) {
+void Player::Update() {
 	
-	viewProjection;
 	//	キャラクターの移動ベクトル
 	Vector3 move = {0.0f, 0.0f, 0.0f};
 	//	キャラクターの移動速さ
@@ -81,6 +83,7 @@ void Player::Update(ViewProjection& viewProjection) {
 
 void Player::Draw(ViewProjection& viewProjection) {
 
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	
+	for (auto& i : model_) {
+		i->Draw(worldTransform_, viewProjection, textureHandle_);
+	}
 }

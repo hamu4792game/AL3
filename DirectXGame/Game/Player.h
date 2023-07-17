@@ -13,10 +13,10 @@ public:
 	//	デストラクタ
 	~Player();
 	//	初期化
-	void Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, Vector3 pos);
+	void Initialize(std::array < std::shared_ptr < Model>, 4> model, uint32_t textureHandle, Vector3 pos);
 	
 	//	更新
-	void Update(ViewProjection& viewProjection);
+	void Update();
 
 	//	描画
 	void Draw(ViewProjection& viewProjection);
@@ -29,7 +29,7 @@ private:
 	//	ワールド変換データ
 	WorldTransform worldTransform_;
 	//	モデル
-	std::shared_ptr<Model> model_;
+	std::array < std::shared_ptr < Model>, 4> model_;
 	//	テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 

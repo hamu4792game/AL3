@@ -61,6 +61,12 @@
     <Filter Include="ソース ファイル\3d">
       <UniqueIdentifier>{2d86a1fc-4a9d-4c8d-aed3-9e2eda3d0c79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Skydome">
+      <UniqueIdentifier>{b70c801d-ad7e-44dc-8373-372ed70ac57b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ground">
+      <UniqueIdentifier>{ce3891e3-fe39-4228-bb6f-38e6344c7034}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -89,6 +95,12 @@
     </ClCompile>
     <ClCompile Include="Game\Player.cpp">
       <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Skydome.cpp">
+      <Filter>Skydome</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Ground.cpp">
+      <Filter>Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +193,12 @@
     </ClInclude>
     <ClInclude Include="Game\Player.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Skydome.h">
+      <Filter>Skydome</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Ground.h">
+      <Filter>Ground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,15 +16,31 @@ void GameScene::Initialize() {
 
 	//	playerモデルの生成
 	playerTexture = TextureManager::Load("Player/player.png");
-	playerModel.reset(Model::Create());
-	playerObsever = playerModel;
 
+	playerModels[0].reset(Model::CreateFromOBJ("head", true));
+	playerModels[1].reset(Model::CreateFromOBJ("body", true));
+	playerModels[2].reset(Model::CreateFromOBJ("RArm", true));
+	playerModels[3].reset(Model::CreateFromOBJ("LArm", true));
+
+	//	skydomeモデルの生成
+	skydomeModel.reset(Model::CreateFromOBJ("skydome", true));
+	//	groundモデルの生成
+	groundModel.reset(Model::CreateFromOBJ("ground", true));
+
+	viewProjection.farZ = 2000.0f;
 	viewProjection.Initialize();
 	//	自キャラの生成
 	player = std::make_unique<Player>();
 	//	自キャラの初期化
-	Vector3 playerPos{ 0.0f,0.0f,20.0f };
-	player->Initialize(playerModel, playerTexture, playerPos);
+	Vector3 playerPos{ 0.0f,1.4f,0.0f };
+	player->Initialize(playerModels, playerTexture, playerPos);
+
+	//	天球の生成と初期化
+	skydome = std::make_unique<Skydome>();
+	skydome->Initialize(skydomeModel, { 0.0f,0.0f,0.0f });
+	//	地面の生成と初期化
+	ground = std::make_unique<Ground>();
+	ground->Initialize(groundModel, { 0.0f,0.0f,0.0f });
 
 	//	デバッグカメラの生成
 	debugCamera_ = std::make_unique<DebugCamera>(1280, 720);
@@ -36,8 +52,13 @@ void GameScene::Initialize() {
 
 void GameScene::Update() { 
 	
+	//	天球の更新
+	skydome->Update();
+	//	地面の更新
+	ground->Update();
+
 	//	自キャラの更新
-	player->Update(viewProjection);
+	player->Update();
 	
 	
 #ifdef _DEBUG
@@ -84,6 +105,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	//	天球の描画
+	skydome->Draw(viewProjection);
+	//	地面の描画
+	ground->Draw(viewProjection);
 
 	//	自キャラの描画
 	player->Draw(viewProjection);

@@ -12,6 +12,9 @@
 #include "DebugCamera.h"
 #include "Game/Player.h"
 #include <sstream>
+#include "Game/Skydome.h"
+#include "Game/Ground.h"
+#include <array>
 
 /// <summary>
 /// ゲームシーン
@@ -57,11 +60,17 @@ private: // メンバ変数
 	uint32_t playerTexture = 0;
 	uint32_t enemyTexture = 0;
 	//	3Dモデル
-	std::shared_ptr<Model> playerModel;
-	std::weak_ptr<Model> playerObsever;
+	std::shared_ptr<Model> skydomeModel;
+	std::shared_ptr<Model> groundModel;
+	//	playerのモデル
+	std::array < std::shared_ptr < Model>, 4> playerModels;
 
 	//	自キャラ
 	std::unique_ptr<Player> player;
+	//	天球
+	std::unique_ptr<Skydome> skydome;
+	//	地面
+	std::unique_ptr<Ground> ground;
 
 	//	ビュープロジェクション
 	ViewProjection viewProjection;
