@@ -15,6 +15,7 @@
 #include "Game/Skydome.h"
 #include "Game/Ground.h"
 #include <array>
+#include "Game/FollowCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -69,6 +70,9 @@ private: // メンバ変数
 	std::unique_ptr<Skydome> skydome;
 	//	地面
 	std::unique_ptr<Ground> ground;
+
+	//	追従カメラ
+	std::unique_ptr<FollowCamera> followCamera;
 
 	//	ビュープロジェクション
 	ViewProjection viewProjection;

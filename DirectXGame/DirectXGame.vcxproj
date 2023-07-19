@@ -110,6 +110,7 @@
     <ClCompile Include="3d\WorldTransform.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="Game\FollowCamera.cpp" />
     <ClCompile Include="Game\Ground.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\Skydome.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="base\SafeDelete.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="Game\FollowCamera.h" />
     <ClInclude Include="Game\Ground.h" />
     <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Game\Skydome.h" />

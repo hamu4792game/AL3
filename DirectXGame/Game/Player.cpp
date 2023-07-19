@@ -49,8 +49,11 @@ void Player::Update() {
 	//	ジョイスティック状態取得
 	if (Input::GetInstance()->GetJoystickState(0,joyState))
 	{
-		move.x += static_cast<float>(joyState.Gamepad.sThumbLX / static_cast<float>(SHRT_MAX) * kCharacterSpeed);
-		move.y += static_cast<float>(joyState.Gamepad.sThumbLY / static_cast<float>(SHRT_MAX) * kCharacterSpeed);
+		if (joyState.Gamepad.sThumbLX || joyState.Gamepad.sThumbLY)
+		{
+			move.x = static_cast<float>(joyState.Gamepad.sThumbLX);
+			move.z = static_cast<float>(joyState.Gamepad.sThumbLY);
+		}
 	}
 	//	押した方向で移動ベクトルを変更（左右）
 	if (input_->PushKey(DIK_A)) {
@@ -61,24 +64,26 @@ void Player::Update() {
 	};
 	//	上下
 	if (input_->PushKey(DIK_W)) {
-		move.y += kCharacterSpeed;
+		move.z += kCharacterSpeed;
 	}
 	else if (input_->PushKey(DIK_S)) {
-		move.y -= kCharacterSpeed;
+		move.z -= kCharacterSpeed;
 	};
 
+	//	移動があれば更新
+	if (move.x != 0.0f || move.y != 0.0f || move.z != 0.0f)
+	{
+		//	移動量の正規化
+		move = Normalize(move) * kCharacterSpeed;
+		//	移動ベクトルをカメラの角度だけ回転させる
+		move = TransformNormal(move, MakeRotateMatrix(viewProjection_->rotation_));
+
+		//	移動方向に見た目を合わせる
+		worldTransform_.rotation_.y = std::atan2f(move.x, move.z);
+	}
 	//	座標移動（ベクトルの加算）
 	worldTransform_.translation_ += move;
-
-	//	移動限界座標
-	const float kMoveLimitX = 14.0f;
-	const float kMoveLimitY = 8.0f;
-	//	範囲を超えない処理
-	worldTransform_.translation_.x =
-	    std::clamp(worldTransform_.translation_.x, -kMoveLimitX, kMoveLimitX);
-	worldTransform_.translation_.y =
-	    std::clamp(worldTransform_.translation_.y, -kMoveLimitY, kMoveLimitY);
-
+	
 
 	//	行列更新
 	worldTransform_.UpdateMatrix();
@@ -93,7 +98,7 @@ void Player::Update() {
 	ImGui::Text(
 	    "player : %0.2f,%0.2f,%0.2f", worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z);
-	//ImGui::DragFloat3("te", &parts[2].translation_.x, 0.1f);
+	ImGui::DragFloat3("te", &worldTransform_.rotation_.x, 0.1f);
 	//ImGui::DragFloat3("tu", &parts[2].rotation_.x, 0.1f);
 	
 	ImGui::End();
@@ -107,3 +112,4 @@ void Player::Draw(ViewProjection& viewProjection) {
 		model_[i]->Draw(parts[i], viewProjection);
 	}
 }
+

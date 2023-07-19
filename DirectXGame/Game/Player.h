@@ -36,6 +36,15 @@ private:
 	//	ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState{};
 
-	int32_t timer = 0;
+	//	カメラ
+	const ViewProjection* viewProjection_ = nullptr;
+
+public:
+	//	
+	const WorldTransform& GetWorldTransform() { return worldTransform_; };
+
+	//	
+	void SetViewProjection(const ViewProjection* view) { viewProjection_ = view; };
+
 
 };

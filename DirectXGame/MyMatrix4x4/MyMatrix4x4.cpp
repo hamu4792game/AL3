@@ -306,6 +306,11 @@ MyMatrix4x4 MakeRotateZMatrix(float radian)
 	return result;
 }
 
+MyMatrix4x4 MakeRotateMatrix(const Vector3& rotate)
+{
+	return MakeRotateXMatrix(rotate.x)* MakeRotateYMatrix(rotate.y)* MakeRotateZMatrix(rotate.z);
+}
+
 MyMatrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate)
 {
 	MyMatrix4x4 result{};

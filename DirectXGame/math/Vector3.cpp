@@ -59,6 +59,11 @@ Vector3 Vector3::operator*(const float& num) const
 	return result;
 }
 
+Vector3 Vector3::operator*(const Vector3& num) const
+{
+	return Vector3(this->x * num.x, this->y * num.y, this->z * num.z);
+}
+
 Vector3 Normalize(Vector3 vec3)
 {
 	Vector3 result;
