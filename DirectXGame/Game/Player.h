@@ -30,7 +30,7 @@ private:
 	WorldTransform worldTransform_;
 	//	モデル
 	std::array < std::shared_ptr < Model>, 4> model_;
-	//	個々のパーツ	head,body,RArm,LArm
+	//	個々のパーツ body(親),head,RArm,LArm
 	std::array<WorldTransform, 4> parts;
 
 	//	ゲームパッドの状態を得る変数
@@ -46,5 +46,12 @@ public:
 	//	
 	void SetViewProjection(const ViewProjection* view) { viewProjection_ = view; };
 
+private:	//	animation
+	//	浮遊ギミックの媒介変数
+	float floatingParameter_ = 0.0f;
 
+	//	浮遊ギミック初期化
+	void InitializeFloatingGimmick();
+	//	浮遊ギミック更新処置
+	void UpdataFloatingGimmick();
 };

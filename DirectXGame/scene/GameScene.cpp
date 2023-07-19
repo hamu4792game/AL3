@@ -15,8 +15,8 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	//	playerモデルの生成
-	playerModels[0].reset(Model::CreateFromOBJ("head", true));
-	playerModels[1].reset(Model::CreateFromOBJ("body", true));
+	playerModels[0].reset(Model::CreateFromOBJ("body", true));
+	playerModels[1].reset(Model::CreateFromOBJ("head", true));
 	playerModels[2].reset(Model::CreateFromOBJ("RArm", true));
 	playerModels[3].reset(Model::CreateFromOBJ("LArm", true));
 
@@ -30,7 +30,7 @@ void GameScene::Initialize() {
 	//	自キャラの生成
 	player = std::make_unique<Player>();
 	//	自キャラの初期化
-	Vector3 playerPos{ 0.0f,2.0f,0.0f };
+	Vector3 playerPos{ 0.0f,5.0f,0.0f };
 	player->Initialize(playerModels, playerPos);
 	
 	//	天球の生成と初期化
