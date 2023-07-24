@@ -31,7 +31,6 @@ void Enemy::Initialize(const std::vector<std::shared_ptr<Model>>& models, Vector
 	parts_[1].translation_ = Vector3{ 1.7f,1.1f,0.5f };
 	parts_[1].rotation_ = Vector3{ 4.75f,0.0f,0.0f };
 
-
 }
 
 void Enemy::Update()
@@ -51,9 +50,7 @@ void Enemy::Update()
 		if (worldTransform_.rotation_.y >= std::numbers::pi_v<float> *2.0f)	{
 			worldTransform_.rotation_.y -= std::numbers::pi_v<float> *2.0f;
 		}
-
 		worldTransform_.translation_ += move;
-
 	}
 
 	//	行列更新

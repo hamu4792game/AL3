@@ -15,11 +15,12 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	//	playerモデルの生成
-	playerModels.resize(4);
+	playerModels.resize(5);
 	playerModels[0].reset(Model::CreateFromOBJ("body", true));
 	playerModels[1].reset(Model::CreateFromOBJ("head", true));
 	playerModels[2].reset(Model::CreateFromOBJ("RArm", true));
 	playerModels[3].reset(Model::CreateFromOBJ("LArm", true));
+	playerModels[4].reset(Model::CreateFromOBJ("weapon", true));
 
 	//	enemyモデルの生成
 	enemyModels.resize(2);

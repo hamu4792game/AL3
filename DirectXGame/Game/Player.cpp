@@ -32,6 +32,8 @@ void Player::Initialize(const std::vector<std::shared_ptr<Model>>& models, Vecto
 	parts_[1].translation_ = Vector3{ 0.0f,1.5f,0.0f };
 	parts_[2].translation_ = Vector3{ -0.2f,1.7f,0.0f };
 	parts_[3].translation_ = Vector3{ 0.2f,1.7f,0.0f };
+	parts_[4].translation_ = Vector3{ 0.0f,2.0f,0.0f };
+	parts_[4].scale_ = Vector3{ 0.5f,0.5f,0.5f };
 
 	InitializeFloatingGimmick();
 }
