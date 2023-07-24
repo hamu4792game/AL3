@@ -4,43 +4,36 @@
 #include <numbers>
 #include <cmath>
 
-Player::Player() {
-
-}
-
-Player::~Player() {
-
-}
-
-void Player::Initialize(std::array < std::shared_ptr < Model>, 4> model, Vector3 pos) {
+void Player::Initialize(const std::vector<std::shared_ptr<Model>>& models, Vector3 pos)
+{
 	//	NULLポインタチェック
-	for (auto& i : model)
+	for (auto& i : models)
 	{
 		assert(i);
 	}
 	//	シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
-	
+
 	//	受け取ったデータをメンバ変数に記録する
-	this->model_ = model;
+	this->models_ = models;
 	//	ワールド変換の初期化
 	this->worldTransform_.Initialize();
 	this->worldTransform_.translation_ = pos;
 
-	for (auto& i : parts)
+	parts_.resize(models_.size());
+	for (auto& i : parts_)
 	{
 		i.Initialize();
-		i.parent_ = &parts[0];
+		i.parent_ = &parts_[0];
 	}
-	parts[0].parent_ = &worldTransform_;
+	parts_[0].parent_ = &worldTransform_;
 	//	パーツ毎の設定
-	parts[0].translation_ = Vector3{ 0.0f,0.0f,0.0f };
-	parts[1].translation_ = Vector3{ 0.0f,1.5f,0.0f };
-	parts[2].translation_ = Vector3{ -0.2f,1.7f,0.0f };
-	parts[3].translation_ = Vector3{ 0.2f,1.7f,0.0f };
+	parts_[0].translation_ = Vector3{ 0.0f,0.0f,0.0f };
+	parts_[1].translation_ = Vector3{ 0.0f,1.5f,0.0f };
+	parts_[2].translation_ = Vector3{ -0.2f,1.7f,0.0f };
+	parts_[3].translation_ = Vector3{ 0.2f,1.7f,0.0f };
 
 	InitializeFloatingGimmick();
-
 }
 
 void Player::Update() {
@@ -95,7 +88,7 @@ void Player::Update() {
 	//	行列更新
 	worldTransform_.UpdateMatrix();
 	//	partsに親座標の足して更新
-	for (auto& i : parts)
+	for (auto& i : parts_)
 	{
 		i.UpdateMatrix();
 	}
@@ -106,19 +99,11 @@ void Player::Update() {
 	    "player : %0.2f,%0.2f,%0.2f", worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z);
 	ImGui::DragFloat3("te", &worldTransform_.rotation_.x, 0.1f);
-	ImGui::DragFloat3("tu", &parts[2].rotation_.x, 0.1f);
+	ImGui::DragFloat3("tu", &parts_[2].rotation_.x, 0.1f);
 	//ImGui::DragFloat3("to", &parts[2].translation_.x, 0.1f);
 	
 	ImGui::End();
 
-}
-
-void Player::Draw(ViewProjection& viewProjection) {
-
-	for (uint16_t i = 0u; i < 4u; i++)
-	{
-		model_[i]->Draw(parts[i], viewProjection);
-	}
 }
 
 void Player::InitializeFloatingGimmick() {
@@ -138,10 +123,10 @@ void Player::UpdataFloatingGimmick() {
 	//	浮遊の振幅<m>
 	const float swingWidth = 0.2f;
 	//	浮遊を座標に更新反映
-	parts[0].translation_.y = std::sinf(floatingParameter_) * swingWidth;
+	parts_[0].translation_.y = std::sinf(floatingParameter_) * swingWidth;
 
 	//	腕振り
-	parts[2].rotation_.x = std::sinf(floatingParameter_) *  0.5f;
-	parts[3].rotation_.x = std::sinf(floatingParameter_) * -0.5f;
+	parts_[2].rotation_.x = std::sinf(floatingParameter_) *  0.5f;
+	parts_[3].rotation_.x = std::sinf(floatingParameter_) * -0.5f;
 
 }

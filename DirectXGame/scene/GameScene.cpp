@@ -15,10 +15,16 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	//	playerモデルの生成
+	playerModels.resize(4);
 	playerModels[0].reset(Model::CreateFromOBJ("body", true));
 	playerModels[1].reset(Model::CreateFromOBJ("head", true));
 	playerModels[2].reset(Model::CreateFromOBJ("RArm", true));
 	playerModels[3].reset(Model::CreateFromOBJ("LArm", true));
+
+	//	enemyモデルの生成
+	enemyModels.resize(2);
+	enemyModels[0].reset(Model::CreateFromOBJ("enemyBody", true));
+	enemyModels[1].reset(Model::CreateFromOBJ("enemyWeapon", true));
 
 	//	skydomeモデルの生成
 	skydomeModel.reset(Model::CreateFromOBJ("skydome", true));
@@ -32,6 +38,11 @@ void GameScene::Initialize() {
 	//	自キャラの初期化
 	Vector3 playerPos{ 0.0f,5.0f,0.0f };
 	player->Initialize(playerModels, playerPos);
+	//	敵キャラの生成
+	enemy = std::make_unique<Enemy>();
+	//	敵キャラの初期化
+	Vector3 enemyPos{ 0.0f,5.0f,0.0f };
+	enemy->Initialize(enemyModels, enemyPos);
 	
 	//	天球の生成と初期化
 	skydome = std::make_unique<Skydome>();
@@ -64,6 +75,8 @@ void GameScene::Update() {
 
 	//	自キャラの更新
 	player->Update();
+
+	enemy->Update();
 
 	
 #ifdef _DEBUG
@@ -121,6 +134,9 @@ void GameScene::Draw() {
 	skydome->Draw(viewProjection);
 	//	地面の描画
 	ground->Draw(viewProjection);
+
+	//	敵キャラ
+	enemy->Draw(viewProjection);
 
 	//	自キャラの描画
 	player->Draw(viewProjection);

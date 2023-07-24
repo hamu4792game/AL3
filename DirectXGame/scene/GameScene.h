@@ -14,8 +14,8 @@
 #include <sstream>
 #include "Game/Skydome.h"
 #include "Game/Ground.h"
-#include <array>
 #include "Game/FollowCamera.h"
+#include "Game/Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -62,10 +62,14 @@ private: // メンバ変数
 	std::shared_ptr<Model> skydomeModel;
 	std::shared_ptr<Model> groundModel;
 	//	playerのモデル
-	std::array < std::shared_ptr < Model>, 4> playerModels;
+	std::vector < std::shared_ptr < Model>> playerModels;
+	//	enemyのモデル
+	std::vector < std::shared_ptr < Model>> enemyModels;
 
 	//	自キャラ
 	std::unique_ptr<Player> player;
+	//	敵キャラ
+	std::unique_ptr<Enemy> enemy;
 	//	天球
 	std::unique_ptr<Skydome> skydome;
 	//	地面

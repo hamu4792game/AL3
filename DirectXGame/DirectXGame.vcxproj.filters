@@ -67,6 +67,12 @@
     <Filter Include="Ground">
       <UniqueIdentifier>{ce3891e3-fe39-4228-bb6f-38e6344c7034}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BaseCharacter">
+      <UniqueIdentifier>{f999286f-e697-47d1-be8c-16c85ed9994f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{79a2107f-252d-4488-b3c7-6399142a99a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -101,6 +107,15 @@
     </ClCompile>
     <ClCompile Include="Game\Ground.cpp">
       <Filter>Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\FollowCamera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\BaseClass\BaseCharacter.cpp">
+      <Filter>BaseCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Enemy.cpp">
+      <Filter>Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +214,15 @@
     </ClInclude>
     <ClInclude Include="Game\Ground.h">
       <Filter>Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\FollowCamera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BaseClass\BaseCharacter.h">
+      <Filter>BaseCharacter</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Enemy.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
