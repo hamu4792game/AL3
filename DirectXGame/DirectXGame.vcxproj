@@ -111,6 +111,7 @@
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="Game\BaseClass\BaseCharacter.cpp" />
+    <ClCompile Include="Game\BaseClass\GlobalManagement.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
     <ClCompile Include="Game\FollowCamera.cpp" />
     <ClCompile Include="Game\Ground.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="Game\BaseClass\BaseCharacter.h" />
+    <ClInclude Include="Game\BaseClass\GlobalManagement.h" />
     <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\FollowCamera.h" />
     <ClInclude Include="Game\Ground.h" />

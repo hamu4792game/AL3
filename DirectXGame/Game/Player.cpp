@@ -3,9 +3,17 @@
 #include "ImGuiManager.h"
 #include <numbers>
 #include <cmath>
+#include "BaseClass/GlobalManagement.h"
 
 void Player::Initialize(const std::vector<std::shared_ptr<Model>>& models, Vector3 pos)
 {
+	//	調整項目の宣言
+	GlobalManagement* globalManagement = GlobalManagement::GetInstance();
+	const char* groupName = "Player";
+	//	グループを追加
+	GlobalManagement::GetInstance()->CreateGroup(groupName);
+	globalManagement->SetValue(groupName, "Test", Vector3(1.2f, 3.4f, 5.6f));
+
 	//	NULLポインタチェック
 	for (auto& i : models)
 	{

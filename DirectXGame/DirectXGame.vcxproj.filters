@@ -73,6 +73,9 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{79a2107f-252d-4488-b3c7-6399142a99a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GlobalManagement">
+      <UniqueIdentifier>{8076de18-137c-46c0-80e3-97f98f59b5c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="Game\Enemy.cpp">
       <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\BaseClass\GlobalManagement.cpp">
+      <Filter>GlobalManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Game\Enemy.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BaseClass\GlobalManagement.h">
+      <Filter>GlobalManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
