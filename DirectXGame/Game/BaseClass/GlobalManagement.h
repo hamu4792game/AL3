@@ -46,14 +46,25 @@ public:
 	/// </summary>
 	void Updata();
 
+
+public:
+	//	グローバル変数の保存先ファイルパス
+	const std::string kDirectoryPath = "Resources/GlobalManagement/";
 	/// <summary>
 	/// ファイルに書き出し
 	/// </summary>
 	/// <param name="groupName">グループ</param>
 	void SaveFile(const std::string& groupName);
 
-public:
-	//	グローバル変数の保存先ファイルパス
-	const std::string kDirectoryPath = "Resources/GlobalManagement/";
+	//	ディレクトリの全ファイルの読み込み
+	void LoadFiles();
+
+	/// <summary>
+	/// ファイルからよみこむ
+	/// </summary>
+	/// <param name="groupName">グループ</param>
+	void LoadFile(const std::string& groupName);
+
+	//	03_09_p24
 
 };

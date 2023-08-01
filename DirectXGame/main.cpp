@@ -58,6 +58,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR /*lpCmdLine*/,
 	primitiveDrawer->Initialize();
 #pragma endregion
 
+	//	グローバル変数の初期化
+	GlobalManagement::GetInstance()->LoadFiles();
+
 	// ゲームシーンの初期化
 	gameScene = new GameScene();
 	gameScene->Initialize();

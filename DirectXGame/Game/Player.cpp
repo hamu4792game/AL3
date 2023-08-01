@@ -12,7 +12,7 @@ void Player::Initialize(const std::vector<std::shared_ptr<Model>>& models, Vecto
 	const char* groupName = "Player";
 	//	グループを追加
 	GlobalManagement::GetInstance()->CreateGroup(groupName);
-	globalManagement->SetValue(groupName, "Test", Vector3(1.2f, 3.4f, 5.6f));
+	globalManagement->SetValue(groupName, "Test", Vector3(1.0f, 3.4f, 5.6f));
 
 	//	NULLポインタチェック
 	for (auto& i : models)
@@ -51,7 +51,7 @@ void Player::Update() {
 	if (input_->TriggerKey(DIK_SPACE))
 	{
 		behavior_ = Behavior::kAttack;
-		GlobalManagement::GetInstance()->SaveFile("Player");
+		//GlobalManagement::GetInstance()->SaveFile("Player");
 	}
 
 

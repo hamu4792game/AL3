@@ -168,3 +168,76 @@ void GlobalManagement::SaveFile(const std::string& groupName)
 	ofs.close();
 
 }
+
+void GlobalManagement::LoadFiles()
+{
+	//	保存先ディレクトリのパスをローカル変数で宣言する
+	std::filesystem::path dir(kDirectoryPath);
+	//	ディレクトリがなければスキップする
+	if (!std::filesystem::exists(kDirectoryPath)) {
+		return;
+	}
+	//	範囲for文
+	std::filesystem::directory_iterator dir_it(kDirectoryPath);
+	for (const std::filesystem::directory_entry& entry : dir_it) {
+		//	ファイルパスを取得
+		const std::filesystem::path& filePath = entry.path();
+		//	ファイル拡張子を取得
+		std::string extension = filePath.extension().string();
+		//	.jsonファイル以外はスキップ
+		if (extension.compare(".json") != 0) {
+			continue;
+		}
+		//	ファイルの読み込み
+		LoadFile(filePath.stem().string());
+	}
+}
+
+void GlobalManagement::LoadFile(const std::string& groupName)
+{
+	//	読み込むjsonファイルのフルパスを合成する
+	std::string filePath = kDirectoryPath + groupName + ".json";
+	//	読み込み用ファイルストリーム
+	std::ifstream ifs;
+	//	ファイルを読み込み用に開く
+	ifs.open(filePath);
+
+	//	ファイルオープン失敗時
+	if (ifs.fail()) {
+		std::string message = "Failed open data file for write";
+		MessageBoxA(nullptr, message.c_str(), "GlobalManagement", 0);
+		assert(0);
+		return;
+	}
+	//	連想配列
+	nlohmann::json root;
+	//	json文字列からjsonのデータ構造に展開
+	ifs >> root;
+	//	ファイルを閉じる
+	ifs.close();
+	//	グループを検索
+	nlohmann::json::iterator itGroup = root.find(groupName);
+	//	未登録チェック
+	assert(itGroup != root.end());
+	//	各アイテムについて
+	for (nlohmann::json::iterator itItem = itGroup->begin(); itItem != itGroup->end(); ++itItem) {
+		//	アイテム名を取得
+		const std::string& itemName = itItem.key();
+		//	int32_t型の値を保持していれば
+		if (itItem->is_number_integer()) {
+			//	int型の値を登録
+			int32_t value = itItem->get<int32_t>();
+			SetValue(groupName, itemName, value);
+		}
+		else if (itItem->is_number_float()) {
+			//	float型の値を登録
+			float value = itItem->get<float>();
+			SetValue(groupName, itemName, value);
+		}
+		else if (itItem->is_array() && itItem->size() == 3) {
+			//	float型のjson配列登録
+			Vector3 value = { itItem->at(0),itItem->at(1),itItem->at(2) };
+			SetValue(groupName, itemName, value);
+		}
+	}
+}
