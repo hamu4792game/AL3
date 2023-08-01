@@ -33,59 +33,51 @@ void Player::Initialize(const std::vector<std::shared_ptr<Model>>& models, Vecto
 	parts_[2].translation_ = Vector3{ -0.2f,1.7f,0.0f };
 	parts_[3].translation_ = Vector3{ 0.2f,1.7f,0.0f };
 	parts_[4].translation_ = Vector3{ 0.0f,2.0f,0.0f };
-	parts_[4].scale_ = Vector3{ 0.5f,0.5f,0.5f };
+	parts_[4].scale_ = Vector3{ 0.4f,0.4f,0.4f };
 
-	InitializeFloatingGimmick();
+	InitializeFloatingGimmick(); 
 }
 
 void Player::Update() {
-	
-	
-	//	キャラクターの移動ベクトル
-	Vector3 move = {0.0f, 0.0f, 0.0f};
-	//	キャラクターの移動速さ
-	const float kCharacterSpeed = 0.2f;
-	
-	//	ジョイスティック状態取得
-	if (Input::GetInstance()->GetJoystickState(0,joyState))
+
+	if (input_->TriggerKey(DIK_SPACE))
 	{
-		if (joyState.Gamepad.sThumbLX || joyState.Gamepad.sThumbLY)
+		behavior_ = Behavior::kAttack;
+	}
+
+
+	//	std::nullopt以外の時通る
+	if (behaviorRequest_)
+	{
+		// 振る舞いを変更する
+		behavior_ = behaviorRequest_.value();
+		//　振る舞いごとの初期化を実行
+		switch (behavior_)
 		{
-			move.x = static_cast<float>(joyState.Gamepad.sThumbLX);
-			move.z = static_cast<float>(joyState.Gamepad.sThumbLY);
+		case Behavior::kRoot:
+		default:
+			InitializeFloatingGimmick();
+			break;
+		case Behavior::kAttack:
+			InitializeAttack();
+			break;
 		}
+		//	振る舞いリクエストをリセット
+		behaviorRequest_ = std::nullopt;
 	}
-	//	押した方向で移動ベクトルを変更（左右）
-	if (input_->PushKey(DIK_A)) {
-		move.x -= kCharacterSpeed;
-	}
-	else if (input_->PushKey(DIK_D)) {
-		move.x += kCharacterSpeed;
-	};
-	//	上下
-	if (input_->PushKey(DIK_W)) {
-		move.z += kCharacterSpeed;
-	}
-	else if (input_->PushKey(DIK_S)) {
-		move.z -= kCharacterSpeed;
-	};
 
-	//	移動があれば更新
-	if (move.x != 0.0f || move.y != 0.0f || move.z != 0.0f)
+	switch (behavior_)
 	{
-		//	移動量の正規化
-		move = Normalize(move) * kCharacterSpeed;
-		//	移動ベクトルをカメラの角度だけ回転させる
-		move = TransformNormal(move, MakeRotateMatrix(viewProjection_->rotation_));
-
-		//	移動方向に見た目を合わせる
-		worldTransform_.rotation_.y = std::atan2f(move.x, move.z);
+	case Behavior::kRoot:
+	default:
+		//	通常行動
+		BehaviorRootUpdate();
+		break;
+	case Behavior::kAttack:
+		//	攻撃処理
+		BehaviorAttackUpdate();
+		break;
 	}
-	//	座標移動（ベクトルの加算）
-	worldTransform_.translation_ += move;
-	
-	//	animation
-	UpdataFloatingGimmick();
 
 	//	行列更新
 	worldTransform_.UpdateMatrix();
@@ -131,4 +123,84 @@ void Player::UpdataFloatingGimmick() {
 	parts_[2].rotation_.x = std::sinf(floatingParameter_) *  0.5f;
 	parts_[3].rotation_.x = std::sinf(floatingParameter_) * -0.5f;
 
+}
+
+void Player::InitializeAttack()
+{
+	attackFrame = 0;
+	parts_[2].rotation_.x = -3.5f;
+	parts_[3].rotation_.x = -3.5f;
+
+}
+
+void Player::BehaviorRootUpdate()
+{
+	//	キャラクターの移動ベクトル
+	Vector3 move = { 0.0f, 0.0f, 0.0f };
+	//	キャラクターの移動速さ
+	const float kCharacterSpeed = 0.2f;
+
+	//	ジョイスティック状態取得
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	{
+		if (joyState.Gamepad.sThumbLX || joyState.Gamepad.sThumbLY)
+		{
+			move.x = static_cast<float>(joyState.Gamepad.sThumbLX);
+			move.z = static_cast<float>(joyState.Gamepad.sThumbLY);
+		}
+	}
+	//	押した方向で移動ベクトルを変更（左右）
+	if (input_->PushKey(DIK_A)) {
+		move.x -= kCharacterSpeed;
+	}
+	else if (input_->PushKey(DIK_D)) {
+		move.x += kCharacterSpeed;
+	};
+	//	上下
+	if (input_->PushKey(DIK_W)) {
+		move.z += kCharacterSpeed;
+	}
+	else if (input_->PushKey(DIK_S)) {
+		move.z -= kCharacterSpeed;
+	};
+
+	//	移動があれば更新
+	if (move.x != 0.0f || move.y != 0.0f || move.z != 0.0f)
+	{
+		//	移動量の正規化
+		move = Normalize(move) * kCharacterSpeed;
+		//	移動ベクトルをカメラの角度だけ回転させる
+		move = TransformNormal(move, MakeRotateMatrix(viewProjection_->rotation_));
+
+		//	移動方向に見た目を合わせる
+		worldTransform_.rotation_.y = std::atan2f(move.x, move.z);
+	}
+	//	座標移動（ベクトルの加算）
+	worldTransform_.translation_ += move;
+
+	//	animation
+	UpdataFloatingGimmick();
+}
+
+void Player::BehaviorAttackUpdate()
+{
+	if (input_->PushKey(DIK_SPACE) && attackFrame == 0) {
+		InitializeAttack();
+		attackFrame++;
+	}
+	else if(attackFrame != 0){
+		attackFrame++;
+		if (attackFrame < 20) {
+			parts_[2].rotation_.x += 0.1f;
+			parts_[3].rotation_.x += 0.1f;
+			parts_[4].rotation_.x += 0.1f;
+		}
+		else if (attackFrame > 30) {
+			attackFrame = 0;
+			parts_[2].rotation_.x = 0.0f;
+			parts_[3].rotation_.x = 0.0f;
+			parts_[4].rotation_.x = 0.0f;
+			behavior_ = Behavior::kRoot;
+		}
+	}
 }
