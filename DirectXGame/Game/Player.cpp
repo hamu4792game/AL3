@@ -51,6 +51,7 @@ void Player::Update() {
 	if (input_->TriggerKey(DIK_SPACE))
 	{
 		behavior_ = Behavior::kAttack;
+		GlobalManagement::GetInstance()->SaveFile("Player");
 	}
 
 

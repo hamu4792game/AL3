@@ -45,4 +45,15 @@ public:
 	/// 毎フレーム処理
 	/// </summary>
 	void Updata();
+
+	/// <summary>
+	/// ファイルに書き出し
+	/// </summary>
+	/// <param name="groupName">グループ</param>
+	void SaveFile(const std::string& groupName);
+
+public:
+	//	グローバル変数の保存先ファイルパス
+	const std::string kDirectoryPath = "Resources/GlobalManagement/";
+
 };
