@@ -12,8 +12,7 @@ void Player::Initialize(const std::vector<std::shared_ptr<Model>>& models, Vecto
 	const char* groupName = "Player";
 	//	グループを追加
 	GlobalManagement::GetInstance()->CreateGroup(groupName);
-	globalManagement->SetValue(groupName, "Test", Vector3(1.0f, 3.4f, 5.6f));
-
+	
 	//	NULLポインタチェック
 	for (auto& i : models)
 	{
@@ -43,17 +42,16 @@ void Player::Initialize(const std::vector<std::shared_ptr<Model>>& models, Vecto
 	parts_[4].translation_ = Vector3{ 0.0f,2.0f,0.0f };
 	parts_[4].scale_ = Vector3{ 0.4f,0.4f,0.4f };
 
+	globalManagement->AddItem(groupName, "Body Translation", parts_[0].translation_);
+	globalManagement->AddItem(groupName, "Head Translation", parts_[1].translation_);
+	globalManagement->AddItem(groupName, "Rarm Translation", parts_[2].translation_);
+	globalManagement->AddItem(groupName, "Larm Translation", parts_[3].translation_);
+
 	InitializeFloatingGimmick(); 
 }
 
 void Player::Update() {
-
-	if (input_->TriggerKey(DIK_SPACE))
-	{
-		behavior_ = Behavior::kAttack;
-		//GlobalManagement::GetInstance()->SaveFile("Player");
-	}
-
+	ApplyGlobalVariables();
 
 	//	std::nullopt以外の時通る
 	if (behaviorRequest_)
@@ -157,6 +155,15 @@ void Player::BehaviorRootUpdate()
 			move.x = static_cast<float>(joyState.Gamepad.sThumbLX);
 			move.z = static_cast<float>(joyState.Gamepad.sThumbLY);
 		}
+		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A))
+		{
+			behaviorRequest_ = Behavior::kAttack;
+		}
+	}
+
+	if (input_->TriggerKey(DIK_SPACE))
+	{
+		behaviorRequest_ = Behavior::kAttack;
 	}
 	//	押した方向で移動ベクトルを変更（左右）
 	if (input_->PushKey(DIK_A)) {
@@ -193,12 +200,7 @@ void Player::BehaviorRootUpdate()
 
 void Player::BehaviorAttackUpdate()
 {
-	if (input_->PushKey(DIK_SPACE) && attackFrame == 0) {
-		InitializeAttack();
-		attackFrame++;
-	}
-	else if(attackFrame != 0){
-		attackFrame++;
+	if(attackFrame != 0){
 		if (attackFrame < 20) {
 			parts_[2].rotation_.x += 0.1f;
 			parts_[3].rotation_.x += 0.1f;
@@ -209,7 +211,20 @@ void Player::BehaviorAttackUpdate()
 			parts_[2].rotation_.x = 0.0f;
 			parts_[3].rotation_.x = 0.0f;
 			parts_[4].rotation_.x = 0.0f;
-			behavior_ = Behavior::kRoot;
+			behaviorRequest_ = Behavior::kRoot;
+			return;
 		}
 	}
+	attackFrame++;
+}
+
+void Player::ApplyGlobalVariables()
+{
+	GlobalManagement* globalManagement = GlobalManagement::GetInstance();
+	const char* groupName = "Player";
+	parts_[0].translation_ = globalManagement->GetVector3Value(groupName, "Body Translation");
+	parts_[1].translation_ = globalManagement->GetVector3Value(groupName, "Head Translation");
+	parts_[2].translation_ = globalManagement->GetVector3Value(groupName, "Rarm Translation");
+	parts_[3].translation_ = globalManagement->GetVector3Value(groupName, "Larm Translation");
+	
 }

@@ -108,7 +108,8 @@ void GlobalManagement::Updata()
 void GlobalManagement::SaveFile(const std::string& groupName)
 {
 	//	グループを検索する
-	/*std::unordered_map<std::string, Group>::iterator*/auto itGroup = datas_.find(groupName);
+	/*std::unordered_map<std::string, Group>::iterator*/
+	auto itGroup = datas_.find(groupName);
 
 	//	未登録チェック
 	assert(itGroup != datas_.end());
@@ -240,4 +241,79 @@ void GlobalManagement::LoadFile(const std::string& groupName)
 			SetValue(groupName, itemName, value);
 		}
 	}
+}
+
+void GlobalManagement::AddItem(const std::string& groupName, const std::string& key, int32_t value)
+{
+	auto group = datas_.find(groupName);
+	//	項目が未登録ならendを返す
+	if (group == datas_.end()) {
+		return;
+	}
+	//	項目が未登録なら値のset
+	if (group->second.items.find(key) == group->second.items.end()) {
+		SetValue(groupName, key, value);
+	}
+}
+
+void GlobalManagement::AddItem(const std::string& groupName, const std::string& key, float value)
+{
+	auto group = datas_.find(groupName);
+	//	項目が未登録ならendを返す
+	if (group == datas_.end()) {
+		return;
+	}
+	//	項目が未登録なら値のset
+	if (group->second.items.find(key) == group->second.items.end()) {
+		SetValue(groupName, key, value);
+	}
+}
+
+void GlobalManagement::AddItem(const std::string& groupName, const std::string& key, const Vector3& value)
+{
+	auto group = datas_.find(groupName);
+	//	項目が未登録ならendを返す
+	if (group == datas_.end()) {
+		return;
+	}
+	//	項目が未登録なら値のset
+	if (group->second.items.find(key) == group->second.items.end()) {
+		SetValue(groupName, key, value);
+	}
+}
+
+int32_t GlobalManagement::GetIntValue(const std::string& groupName, const std::string& key) const
+{
+	//	データがなければ止まる
+	assert(datas_.find(groupName) != datas_.end());
+	//	グループの参照を取得
+	const Group& group = datas_.at(groupName);
+	//	指定グループに指定のキーが存在する
+	assert(group.items.find(key) != group.items.end());
+	//	指定グループから指定のキーを取得
+	return std::get<int32_t>(group.items.find(key)->second);
+}
+
+float GlobalManagement::GetfloatValue(const std::string& groupName, const std::string& key) const
+{
+	//	データがなければ止まる
+	assert(datas_.find(groupName) != datas_.end());
+	//	グループの参照を取得
+	const Group& group = datas_.at(groupName);
+	//	指定グループに指定のキーが存在する
+	assert(group.items.find(key) != group.items.end());
+	//	指定グループから指定のキーを取得
+	return std::get<float>(group.items.find(key)->second);
+}
+
+Vector3 GlobalManagement::GetVector3Value(const std::string& groupName, const std::string& key) const
+{
+	//	データがなければ止まる
+	assert(datas_.find(groupName) != datas_.end());
+	//	グループの参照を取得
+	const Group& group = datas_.at(groupName);
+	//	指定グループに指定のキーが存在する
+	assert(group.items.find(key) != group.items.end());
+	//	指定グループから指定のキーを取得
+	return std::get<Vector3>(group.items.find(key)->second);
 }

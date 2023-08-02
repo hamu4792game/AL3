@@ -54,4 +54,9 @@ private:	//	animation
 	//	攻撃行動更新
 	void BehaviorAttackUpdate();
 
+
+public:
+	//	調整項目の適用
+	void ApplyGlobalVariables();
+
 };
